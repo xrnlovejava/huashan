@@ -1,6 +1,6 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { addUser, editUser, delUser, updateStatus, getByParam } from '@/api/user'
+import { addUser, editUser, delUser, updateStatus, getByParam, updateUserType, updatePwd } from '@/api/user'
 
 const user = {
   state: {
@@ -94,8 +94,13 @@ const user = {
 
     // 获取用户信息 byParam
     getByParam({ commit }, searchInfo) {
+      for (var x in searchInfo) {
+        if (searchInfo[x] === '') {
+          delete searchInfo[x]
+        }
+      }
       return new Promise((resolve, reject) => {
-        getByParam(searchInfo.nickName, parseInt(searchInfo.operatorBut), parseInt(searchInfo.pageNum), parseInt(searchInfo.pageSize), parseInt(searchInfo.id), searchInfo.fullName, searchInfo.phone, parseInt(searchInfo.status), parseInt(searchInfo.userType)).then(response => {
+        getByParam(searchInfo).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -140,6 +145,28 @@ const user = {
     updateStatus({ commit }, row) {
       return new Promise((resolve, reject) => {
         updateStatus(parseInt(row.id), parseInt(row.status) === 2 ? 0 : 1).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 根据用户ID修改用户类型
+    updateUserType({ commit }, row) {
+      return new Promise((resolve, reject) => {
+        updateUserType(parseInt(row.id), parseInt(row.userType)).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 根据用户ID修改密码
+    updatePwd({ commit }, row) {
+      return new Promise((resolve, reject) => {
+        updatePwd(parseInt(row.id), row.oldPwd, row.newPwd).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

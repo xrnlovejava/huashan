@@ -34,21 +34,12 @@ export function editUser(id, userNo, nickName, fullName, phone, introduction, bi
   })
 }
 
-export function getByParam(nickName, operatorBut, pageNum, pageSize, id, fullName, phone, status, userType) {
+export function getByParam(data) {
+  console.log(data)
   return request({
     url: '/user/byParam',
     method: 'post',
-    data: {
-      nickName,
-      operatorBut,
-      pageNum,
-      pageSize,
-      id,
-      fullName,
-      phone,
-      status,
-      userType
-    }
+    data: data
   })
 }
 
@@ -69,6 +60,29 @@ export function updateStatus(id, status) {
     data: {
       id,
       status
+    }
+  })
+}
+
+export function updateUserType(id, userType) {
+  return request({
+    url: '/user/updateType',
+    method: 'post',
+    data: {
+      id,
+      userType
+    }
+  })
+}
+
+export function updatePwd(id, oldPwd, newPwd) {
+  return request({
+    url: '/user/updatePwd',
+    method: 'post',
+    data: {
+      id,
+      oldPwd,
+      newPwd
     }
   })
 }

@@ -175,6 +175,12 @@ export const asyncRouterMap = [
         name: '修改信息',
         component: () => import('@/views/users/edituser'),
         meta: { title: '修改个人信息', icon: 'form' }
+      },
+      {
+        path: 'editpass',
+        name: '修改密码',
+        component: () => import('@/views/users/editpass'),
+        meta: { title: '修改密码', icon: 'form' }
       }
     ]
   },

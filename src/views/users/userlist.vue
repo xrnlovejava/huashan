@@ -1,34 +1,38 @@
 <template>
   <div class="main">
-    <el-row :gutter="20">
-      <el-col :span="8">
-        <div class="grid-content bg-purple">
-          <el-input v-model="kw" placeholder="请输入内容" class="input-with-select">
-            <el-select slot="prepend" v-model="select" placeholder="请选择">
-              <el-option label="姓名" value="1" />
-              <el-option label="手机号" value="2" />
-            </el-select>
-            <el-button slot="append" icon="el-icon-search" />
-          </el-input>
-        </div>
-      </el-col>
-      <el-col :span="10" :offset="6">
-        <div class="grid-content bg-purple-light">
-          <el-button-group>
-            <el-button plain icon="el-icon-delete" @click="deleteMany()">删除所选</el-button>
-            <el-button plain icon="el-icon-delete">保留按钮</el-button>
-          </el-button-group>
-          <el-button-group>
-            <el-button plain icon="el-icon-arrow-left">上一页</el-button>
-            <el-button plain>
-              下一页
-              <i class="el-icon-arrow-right el-icon--right" />
-            </el-button>
-          </el-button-group>
-        </div>
-      </el-col>
-    </el-row>
-    <br >
+    <el-form :inline="true" :model="userinfo">
+      <el-form-item label="id">
+        <el-input v-model="userinfo.id" placeholder="用户ID"/>
+      </el-form-item>
+      <el-form-item label="nickName">
+        <el-input v-model="userinfo.nickName" placeholder="昵称"/>
+      </el-form-item>
+      <el-form-item label="fullName">
+        <el-input v-model="userinfo.fullName" placeholder="姓名"/>
+      </el-form-item>
+      <el-form-item label="phone">
+        <el-input v-model="userinfo.phone" placeholder="手机号	"/>
+      </el-form-item>
+      <el-form-item label="status">
+        <el-select v-model="userinfo.status" placeholder="账号状态" clearable>
+          <el-option :value="1" label="启用" />
+          <el-option :value="0" label="停用" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="userType	">
+        <el-select v-model="userinfo.userType" placeholder="用户类型" clearable>
+          <el-option :value="0" label="普通用户" />
+          <el-option :value="1" label="VIP用户" />
+          <el-option :value="2" label="白金VIP用户" />
+          <el-option :value="3" label="黄金VIP用户" />
+          <el-option :value="4" label="铂金VIP用户" />
+          <el-option :value="5" label="钻石用户" />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="getUserList">查询</el-button>
+      </el-form-item>
+    </el-form>
     <el-table v-loading="loading" :data="tableData" style="width: 100%" stripe border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" />
       <el-table-column label="UID" width="50">
@@ -62,7 +66,11 @@
         </template>
       </el-table-column>
       <el-table-column label="userType">
-        <template slot-scope="scope">{{ scope.row.userType }}</template>
+        <template slot-scope="scope">
+          <el-select v-model="scope.row.userType" placeholder="请选择" @change="usertypeChange(scope.row)">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
+        </template>
       </el-table-column>
       <el-table-column label="avatar">
         <template slot-scope="scope">
@@ -81,6 +89,27 @@
         <span>+ 添加</span>
       </div>
     </el-col>
+
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <el-button-group>
+            <el-button plain icon="el-icon-delete" @click="deleteMany()">删除所选</el-button>
+            <el-button plain icon="el-icon-delete">保留按钮</el-button>
+          </el-button-group>
+        </div>
+      </el-col>
+      <el-col :span="5" :offset="12">
+        <div class="grid-content bg-purple-light">
+          <el-button-group>
+            <el-button :disabled="userinfo.pageNum === 1?true:false" plain icon="el-icon-arrow-left" @click="page('up')">上一页</el-button>
+            <el-button plain>{{ userinfo.pageNum }}</el-button>
+            <el-button plain @click="page('down')">下一页<i class="el-icon-arrow-right el-icon--right" /></el-button>
+          </el-button-group>
+        </div>
+      </el-col>
+    </el-row>
+
     <el-dialog :visible.sync="dialogFormVisible" :title="edittype">
       <el-form :model="form">
         <el-form-item :label-width="formLabelWidth" label="userNo">
@@ -125,15 +154,6 @@
 export default {
   data() {
     return {
-      nickName: '',
-      operatorBut: 0,
-      pageNum: 1,
-      pageSize: 10,
-      id: '',
-      fullName: '',
-      phone: '',
-      status: '',
-      userType: '',
       loading: true,
       tableData: [],
       multipleSelection: [],
@@ -141,32 +161,43 @@ export default {
       select: '1',
       dialogFormVisible: false,
       form: {},
+      userinfo: {
+        nickName: '',
+        operatorBut: 0,
+        pageNum: 1,
+        pageSize: 10,
+        id: '',
+        fullName: '',
+        phone: '',
+        status: '',
+        userType: ''
+      },
       edittype: '',
       buttonloading: false,
-      formLabelWidth: '80px'
+      formLabelWidth: '80px',
+      options: [{
+        value: 0,
+        label: '普通用户'
+      }, {
+        value: 1,
+        label: 'VIP用户'
+      }, {
+        value: 2,
+        label: '白金VIP用户'
+      }, {
+        value: 3,
+        label: '黄金VIP用户'
+      }, {
+        value: 4,
+        label: '铂金VIP用户'
+      }, {
+        value: 5,
+        label: '钻石用户'
+      }]
     }
   },
   created: function() {
-    const userinfo = {
-      nickName: '',
-      operatorBut: 0,
-      pageNum: 1,
-      pageSize: 10,
-      id: '',
-      fullName: '',
-      phone: '',
-      status: '',
-      userType: ''
-    }
-    this.$store
-      .dispatch('getByParam', userinfo)
-      .then(response => {
-        this.loading = false
-        this.tableData = response.result.data
-      })
-      .catch(() => {
-        this.loading = false
-      })
+    this.getUserList()
   },
   methods: {
     message(msg, type) {
@@ -174,6 +205,28 @@ export default {
         message: msg,
         type: type
       })
+    },
+    getUserList() {
+      this.loading = true
+      this.$store.dispatch('getByParam', this.userinfo).then(response => {
+        this.loading = false
+        console.log(response)
+        this.tableData = response.result.data
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    page(type) {
+      if (type === 'up') {
+        if (this.userinfo.pageNum > 1) {
+          this.userinfo.pageNum -= 1
+        } else {
+          this.message('没有上一页啦', 'warning')
+        }
+      } else {
+        this.userinfo.pageNum += 1
+      }
+      this.getUserList()
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -197,6 +250,19 @@ export default {
     statusChange(row) {
       this.$store
         .dispatch('updateStatus', row)
+        .then(response => {
+          this.buttonloading = false
+          const restype = response.code !== '000000' ? 'error' : 'success'
+          this.message(response.message, restype)
+        })
+        .catch(() => {
+          this.buttonloading = false
+        })
+    },
+    usertypeChange(row) {
+      console.log(row)
+      this.$store
+        .dispatch('updateUserType', row)
         .then(response => {
           this.buttonloading = false
           const restype = response.code !== '000000' ? 'error' : 'success'
@@ -281,7 +347,7 @@ export default {
 }
 
 .el-table-add-row {
-  margin-top: 10px;
+  margin: 10px 0px;
   width: 100%;
   height: 34px;
   border: 1px dashed #c1c1cd;
