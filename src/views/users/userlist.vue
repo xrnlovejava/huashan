@@ -11,7 +11,7 @@
         <el-input v-model="userinfo.fullName" placeholder="姓名"/>
       </el-form-item>
       <el-form-item label="phone">
-        <el-input v-model="userinfo.phone" placeholder="手机号	"/>
+        <el-input v-model="userinfo.phone" placeholder="手机号"/>
       </el-form-item>
       <el-form-item label="status">
         <el-select v-model="userinfo.status" placeholder="账号状态" clearable>
@@ -89,13 +89,13 @@
         <span>+ 添加</span>
       </div>
     </el-col>
-
+    <br><br><br>
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-button-group>
             <el-button plain icon="el-icon-delete" @click="deleteMany()">删除所选</el-button>
-            <el-button plain icon="el-icon-delete">保留按钮</el-button>
+            <el-button plain icon="el-icon-plus" @click="handleAdd()">新增用户</el-button>
           </el-button-group>
         </div>
       </el-col>
@@ -208,6 +208,7 @@ export default {
     },
     getUserList() {
       this.loading = true
+      this.tableData = []
       this.$store.dispatch('getByParam', this.userinfo).then(response => {
         this.loading = false
         console.log(response)
