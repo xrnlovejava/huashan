@@ -34,7 +34,7 @@ export const constantRouterMap = [
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '谢后台', icon: 'form' }
+      meta: { title: '后台管理系统', icon: 'form' }
     }]
   }
 
@@ -197,6 +197,22 @@ export const asyncRouterMap = [
         name: '角色管理',
         component: () => import('@/views/roles/roleslist'),
         meta: { title: '角色管理', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/power',
+    component: Layout,
+    meta: {
+      title: '权限管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'powerlist',
+        name: '权限管理',
+        component: () => import('@/views/power/powerlist'),
+        meta: { title: '权限管理', icon: 'form' }
       }
     ]
   },

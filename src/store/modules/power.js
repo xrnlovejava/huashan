@@ -1,45 +1,45 @@
-import { getRoleByParam, addRole, editRole, delRole } from '@/api/role'
-const role = {
+import { getPowerByParam, addPower, editPower, delPower } from '@/api/power'
+const power = {
   actions: {
-    // 获取角色信息 byParam
-    getRoleByParam({ commit }, searchInfo) {
+    // 获取权限信息 byParam
+    getPowerByParam({ commit }, searchInfo) {
       for (var x in searchInfo) {
         if (searchInfo[x] === '') {
           delete searchInfo[x]
         }
       }
       return new Promise((resolve, reject) => {
-        getRoleByParam(searchInfo).then(response => {
+        getPowerByParam(searchInfo).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     },
-    // 新增角色
-    addRole({ commit }, roleInfo) {
+    // 新增权限
+    addPower({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        addRole(roleInfo.roleName, roleInfo.descript).then(response => {
+        addPower(Info.powerName, Info.elevel, Info.parentId, Info.operate, Info.url, Info.descript).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     },
-    // 修改角色信息
-    editRole({ commit }, roleInfo) {
+    // 修改权限信息
+    editPower({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        editRole(parseInt(roleInfo.roleId), roleInfo.roleName, roleInfo.descript).then(response => {
+        editPower(parseInt(Info.powerId), Info.powerName, Info.elevel, Info.parentId, Info.operate, Info.url, Info.descript).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     },
-    // 删除角色id
-    delRole({ commit }, id) {
+    // 删除权限id
+    delPower({ commit }, id) {
       return new Promise((resolve, reject) => {
-        delRole(id).then(response => {
+        delPower(id).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -48,4 +48,4 @@ const role = {
     }
   }
 }
-export default role
+export default power
