@@ -216,5 +216,34 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/news',
+    component: Layout,
+    meta: {
+      title: '文章管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'newslist',
+        name: '文章列表',
+        component: () => import('@/views/news/newslist'),
+        meta: { title: '文章列表', icon: 'form' }
+      },
+      {
+        path: 'addnews',
+        name: '新增文章',
+        component: () => import('@/views/news/addnews'),
+        meta: { title: '新增文章', icon: 'form' }
+      },
+      {
+        path: 'editnews/:newsId',
+        name: '编辑文章',
+        hidden: true,
+        component: () => import('@/views/news/editnews'),
+        meta: { title: '编辑文章', icon: 'form' }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]

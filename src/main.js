@@ -1,4 +1,8 @@
 import Vue from 'vue'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+
+import axios from 'axios'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
@@ -26,8 +30,10 @@ import '@/permission' // permission control
 // import '../mock' // simulation data
 
 Vue.use(ElementUI, { locale })
+Vue.use(mavonEditor)
 
 Vue.config.productionTip = false
+Vue.prototype.$axios = axios
 
 new Vue({
   el: '#app',

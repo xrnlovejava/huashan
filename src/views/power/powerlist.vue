@@ -178,7 +178,9 @@ export default {
     handleEdit(index, row) {
       this.edittype = '修改权限信息'
       this.form = this.tableData[index]
-      this.form.operate = this.form.operate.split('')
+      if (this.form.operate) {
+        this.form.operate = this.form.operate.split('')
+      }
       this.currentIndex = index
       this.dialogFormVisible = true
     },
