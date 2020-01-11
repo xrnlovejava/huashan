@@ -196,7 +196,7 @@ export const asyncRouterMap = [
         path: 'rolelist',
         name: '角色管理',
         component: () => import('@/views/roles/roleslist'),
-        meta: { title: '角色管理', icon: 'form' }
+        meta: { title: '角色管理', icon: 'nested' }
       }
     ]
   },
@@ -212,7 +212,7 @@ export const asyncRouterMap = [
         path: 'powerlist',
         name: '权限管理',
         component: () => import('@/views/power/powerlist'),
-        meta: { title: '权限管理', icon: 'form' }
+        meta: { title: '权限管理', icon: 'nested' }
       }
     ]
   },
@@ -242,6 +242,22 @@ export const asyncRouterMap = [
         hidden: true,
         component: () => import('@/views/news/editnews'),
         meta: { title: '编辑文章', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/activity',
+    component: Layout,
+    meta: {
+      title: '活动管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'list',
+        name: '活动管理',
+        component: () => import('@/views/activity/list'),
+        meta: { title: '活动管理', icon: 'nested' }
       }
     ]
   },

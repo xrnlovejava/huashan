@@ -211,7 +211,6 @@ export default {
       this.tableData = []
       this.$store.dispatch('getByParam', this.userinfo).then(response => {
         this.loading = false
-        console.log(response)
         this.tableData = response.result.data
       }).catch(() => {
         this.loading = false

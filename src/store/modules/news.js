@@ -1,6 +1,6 @@
 import { getNewsByParam, addNews, editNews, delNews, getNewsById, uploadImg } from '@/api/news'
 import store from '@/store'
-const power = {
+const news = {
   actions: {
     // 获取文章信息 byParam
     getNewsByParam({ commit }, searchInfo) {
@@ -69,4 +69,4 @@ const power = {
     }
   }
 }
-export default power
+export default news

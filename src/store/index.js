@@ -5,6 +5,7 @@ import user from './modules/user'
 import role from './modules/role'
 import power from './modules/power'
 import news from './modules/news'
+import activity from './modules/activity'
 import permission from './modules/permission'
 import getters from './getters'
 
@@ -17,7 +18,8 @@ const store = new Vuex.Store({
     permission,
     role,
     power,
-    news
+    news,
+    activity
   },
   getters
 })
