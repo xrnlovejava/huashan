@@ -33,7 +33,7 @@ export function addAec(title, author, content, status) {
 
 export function editAec(id, title, author, content, status) {
   return request({
-    url: '/activity/update',
+    url: '/aec/update',
     method: 'post',
     data: {
       id,
@@ -47,7 +47,7 @@ export function editAec(id, title, author, content, status) {
 
 export function delAec(ids) {
   return request({
-    url: '/activity/delete',
+    url: '/aec/delete',
     method: 'post',
     data: {
       ids

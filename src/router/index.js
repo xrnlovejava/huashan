@@ -31,6 +31,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/dashboard',
     name: 'Dashboard',
+    hidden: true,
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
@@ -258,6 +259,22 @@ export const asyncRouterMap = [
         name: '活动管理',
         component: () => import('@/views/activity/list'),
         meta: { title: '活动管理', icon: 'nested' }
+      }
+    ]
+  },
+  {
+    path: '/aec',
+    component: Layout,
+    meta: {
+      title: '报名管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'list',
+        name: '报名管理',
+        component: () => import('@/views/aec/list'),
+        meta: { title: '报名管理', icon: 'nested' }
       }
     ]
   },

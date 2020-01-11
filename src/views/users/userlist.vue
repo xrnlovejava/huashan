@@ -74,7 +74,7 @@
       </el-table-column>
       <el-table-column label="avatar">
         <template slot-scope="scope">
-          <img :src="scope.row.avatar" style="height:60px;" >
+          <img :src="scope.row.avatar" class="circleImg" >
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -356,5 +356,11 @@ export default {
   justify-content: center;
   display: flex;
   line-height: 34px;
+}
+
+.circleImg{
+  border-radius: 30px;
+  width:55px;
+  height:55px;
 }
 </style>
