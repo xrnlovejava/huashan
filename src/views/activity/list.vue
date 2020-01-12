@@ -10,16 +10,16 @@
       <el-form-item label="级别">
         <el-input v-model="searchInfo.userLevel" placeholder="用户级别" clearable/>
       </el-form-item>
-      <el-form-item label="报名开始时间">
+      <el-form-item label="报名开始">
         <el-date-picker v-model="searchInfo.enrollStartDate" type="date" placeholder="报名开始时间" style="width: 100%;" clearable/>
       </el-form-item>
-      <el-form-item label="报名结束时间">
+      <el-form-item label="报名结束">
         <el-date-picker v-model="searchInfo.enrollEndDate" type="date" placeholder="报名结束时间" style="width: 100%;" clearable/>
       </el-form-item>
-      <el-form-item label="活动开始时间">
+      <el-form-item label="活动开始">
         <el-date-picker v-model="searchInfo.startDate" type="date" placeholder="活动开始时间" style="width: 100%;" clearable/>
       </el-form-item>
-      <el-form-item label="活动结束时间">
+      <el-form-item label="活动结束">
         <el-date-picker v-model="searchInfo.endDate" type="date" placeholder="活动结束时间" style="width: 100%;" clearable/>
       </el-form-item>
       <el-form-item label="性别">
@@ -46,52 +46,68 @@
     </el-form>
     <el-table v-loading="loading" :data="tableData" style="width: 100%" stripe border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" />
-      <el-table-column label="活动ID" >
+      <el-table-column label="活动ID" width="200">
         <template slot-scope="scope">{{ scope.row.articleId }}</template>
       </el-table-column>
-      <el-table-column label="用户级别限制" width="150">
+      <el-table-column label="用户级别限制" width="120">
         <template slot-scope="scope">{{ scope.row.userLevel==10?"普通":"VIP" }}</template>
       </el-table-column>
-      <el-table-column label="报名开始时间" width="100">
+      <el-table-column label="报名开始时间" width="160">
         <template slot-scope="scope">{{ scope.row.enrollStartDate }}</template>
       </el-table-column>
-      <el-table-column label="报名结束时间" width="100">
+      <el-table-column label="报名结束时间" width="160">
         <template slot-scope="scope">{{ scope.row.enrollEndDate }}</template>
       </el-table-column>
-      <el-table-column label="活动开始时间" width="100">
+      <el-table-column label="活动开始时间" width="160">
         <template slot-scope="scope">{{ scope.row.startDate }}</template>
       </el-table-column>
-      <el-table-column label="活动结束时间" width="100">
+      <el-table-column label="活动结束时间" width="160">
         <template slot-scope="scope">{{ scope.row.endDate }}</template>
       </el-table-column>
       <el-table-column label="性别" width="100">
-        <template slot-scope="scope">{{ scope.row.gender }}</template>
+        <template slot-scope="scope">
+          <div v-if="scope.row.gender == 0">全员</div>
+          <div v-if="scope.row.gender == 1">男</div>
+          <div v-if="scope.row.gender == 2">女</div>
+        </template>
       </el-table-column>
       <el-table-column label="活动状态" width="100">
-        <template slot-scope="scope">{{ scope.row.status }}</template>
+        <template slot-scope="scope">
+          <div v-if="scope.row.status == 1">开始报名</div>
+          <div v-if="scope.row.status == 2">开始审核</div>
+          <div v-if="scope.row.status == 3">活动中</div>
+          <div v-if="scope.row.status == 4">结束</div>
+        </template>
       </el-table-column>
       <el-table-column label="主键ID" width="100">
         <template slot-scope="scope">{{ scope.row.id }}</template>
       </el-table-column>
+      <el-table-column label="对应文章" width="110">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="routerTo(scope.row.articleId)">查看文章</el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.row.articleId)">编辑</el-button>
+          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.articleId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-col :span="24">
-      <div class="el-table-add-row" style="width: 99.2%;" @click="handleAdd()">
-        <span>+ 添加</span>
-      </div>
-    </el-col>
-    <br><br><br>
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-button-group>
             <el-button plain icon="el-icon-delete" @click="deleteMany()">删除所选</el-button>
-            <el-button plain icon="el-icon-plus" @click="handleAdd()">新增活动</el-button>
+          </el-button-group>
+        </div>
+      </el-col>
+      <el-col :span="5" :offset="12">
+        <div class="grid-content bg-purple-light">
+          <el-button-group>
+            <el-button :disabled="searchInfo.pageNum === 1?true:false" plain icon="el-icon-arrow-left" @click="page('up')">上一页</el-button>
+            <el-button plain>{{ searchInfo.pageNum }}</el-button>
+            <el-button plain @click="page('down')">下一页<i class="el-icon-arrow-right el-icon--right" /></el-button>
           </el-button-group>
         </div>
       </el-col>
@@ -100,7 +116,7 @@
     <el-dialog :visible.sync="dialogFormVisible" :title="edittype">
       <el-form :model="form">
         <el-form-item :label-width="formLabelWidth" label="活动ID">
-          <el-input v-model="form.articleId" auto-complete="off" />
+          <el-input :disabled="true" v-model="form.articleId" auto-complete="off" />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="最多参与人数">
           <el-input v-model="form.activityCount" auto-complete="off" />
@@ -170,6 +186,9 @@ export default {
     }
   },
   created: function() {
+    if (this.$route.params.articleId) {
+      this.searchInfo.articleId = this.$route.params.articleId
+    }
     this.getList()
   },
   methods: {
@@ -221,7 +240,7 @@ export default {
     },
     handleDelete(id) {
       this.$store
-        .dispatch('delArticle', id)
+        .dispatch('delActivity', id)
         .then(response => {
           const restype = response.code !== '000000' ? 'error' : 'success'
           this.message(response.message, restype)
@@ -255,9 +274,11 @@ export default {
     },
     onSubmit() {
       this.buttonloading = true
+      this.form.articleId = parseInt(this.form.articleId)
+      this.form.activityCount = parseInt(this.form.activityCount)
       if (this.edittype === '修改活动信息') {
         this.$store
-          .dispatch('editArticle', this.form)
+          .dispatch('editActivity', this.form)
           .then(response => {
             this.buttonloading = false
             const restype = response.code !== '000000' ? 'error' : 'success'
@@ -269,7 +290,7 @@ export default {
           })
       } else {
         this.$store
-          .dispatch('addArticle', this.form)
+          .dispatch('addActivity', this.form)
           .then(response => {
             this.buttonloading = false
             const restype = response.code !== '000000' ? 'error' : 'success'
@@ -281,6 +302,14 @@ export default {
           })
       }
       this.buttonloading = false
+    },
+    routerTo(articleId) {
+      this.$router.push({
+        name: `文章列表`,
+        params: {
+          newsId: articleId
+        }
+      })
     }
   }
 }

@@ -1,6 +1,4 @@
 import { getActivityByParam, getActivityById, addActivity, editActivity, delActivity } from '@/api/activity'
-import store from '@/store'
-
 const activity = {
   actions: {
     // 获取活动信息 byParam
@@ -21,7 +19,7 @@ const activity = {
     // 新增活动
     addActivity({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        addActivity(Info.title, store.getters.nickname, Info.content, Info.status).then(response => {
+        addActivity(parseInt(Info.articleId), Info.activityCount, Info.userLevel, Info.enrollStartDate, Info.enrollEndDate, Info.startDate, Info.endDate, Info.gender, Info.status).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -31,7 +29,7 @@ const activity = {
     // 修改活动信息
     editActivity({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        editActivity(parseInt(Info.id), Info.title, store.getters.nickname, Info.content, Info.status).then(response => {
+        editActivity(parseInt(Info.articleId), Info.activityCount, Info.userLevel, Info.enrollStartDate, Info.enrollEndDate, Info.startDate, Info.endDate, Info.gender, Info.status).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

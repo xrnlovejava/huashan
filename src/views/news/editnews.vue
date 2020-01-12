@@ -22,7 +22,7 @@ export default {
       loading: false,
       but_loading: false,
       newsform: {
-        id: this.$route.params.newsId,
+        newsId: this.$route.params.newsId,
         title: '',
         content: '',
         status: 0
@@ -40,7 +40,7 @@ export default {
       })
     },
     getNewsById() {
-      this.$store.dispatch('getNewsById', this.newsform.id).then(response => {
+      this.$store.dispatch('getNewsById', this.newsform.newsId).then(response => {
         this.newsform.title = response.result.title
         this.newsform.content = response.result.content
         this.newsform.status = response.result.status

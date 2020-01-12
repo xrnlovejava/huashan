@@ -16,6 +16,12 @@
           <el-option :value="0" label="未发布" />
         </el-select>
       </el-form-item>
+      <el-form-item label="类型">
+        <el-select v-model="newsinfo.type" placeholder="文章类型" clearable>
+          <el-option :value="1" label="活动文章" />
+          <el-option :value="0" label="普通文章" />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getNewsList">查询</el-button>
       </el-form-item>
@@ -25,13 +31,21 @@
       <el-table-column label="文章标题" >
         <template slot-scope="scope">{{ scope.row.title }}</template>
       </el-table-column>
-      <el-table-column label="作者" width="150">
+      <el-table-column label="作者" width="100">
         <template slot-scope="scope">{{ scope.row.author }}</template>
       </el-table-column>
-      <el-table-column label="状态" width="100">
+      <el-table-column label="状态" width="80">
         <template slot-scope="scope">{{ scope.row.status==1?"已发布":"未发布" }}</template>
       </el-table-column>
-      <el-table-column label="操作" width="150">
+      <el-table-column label="类型" width="100">
+        <template slot-scope="scope">
+          <div v-if="scope.row.type==1">
+            <el-button size="mini" @click="routerTo(scope.row.newsId)">活动</el-button>
+          </div>
+          <div v-else>普通文章</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="250">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.row.newsId)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.newsId)">删除</el-button>
@@ -69,12 +83,16 @@ export default {
         id: '',
         author: '',
         title: '',
-        status: ''
+        status: '',
+        type: ''
       },
       buttonloading: false
     }
   },
   created: function() {
+    if (this.$route.params.newsId) {
+      this.newsinfo.id = this.$route.params.newsId
+    }
     this.getNewsList()
   },
   methods: {
@@ -127,6 +145,14 @@ export default {
         .catch(() => {
           console.log(id)
         })
+    },
+    routerTo(newsId) {
+      this.$router.push({
+        name: `活动管理`,
+        params: {
+          articleId: newsId
+        }
+      })
     }
   }
 }

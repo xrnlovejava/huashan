@@ -18,28 +18,38 @@ export function getActivityById(id) {
   })
 }
 
-export function addActivity(title, author, content, status) {
+export function addActivity(articleId, activityCount, userLevel, enrollStartDate, enrollEndDate, startDate, endDate, gender, status) {
   return request({
     url: '/activity/add',
     method: 'post',
     data: {
-      title,
-      author,
-      content,
+      articleId,
+      activityCount,
+      userLevel,
+      enrollStartDate,
+      enrollEndDate,
+      startDate,
+      endDate,
+      gender,
       status
     }
   })
 }
 
-export function editActivity(id, title, author, content, status) {
+export function editActivity(articleId, activityCount, userLevel, enrollStartDate, enrollEndDate, startDate, endDate, gender, status) {
+  console.log(articleId, activityCount, userLevel, enrollStartDate, enrollEndDate, startDate, endDate, gender, status)
   return request({
     url: '/activity/update',
     method: 'post',
     data: {
-      id,
-      title,
-      author,
-      content,
+      articleId,
+      activityCount,
+      userLevel,
+      enrollStartDate,
+      enrollEndDate,
+      startDate,
+      endDate,
+      gender,
       status
     }
   })

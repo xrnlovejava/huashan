@@ -31,11 +31,10 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/dashboard',
     name: 'Dashboard',
-    hidden: true,
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '后台管理系统', icon: 'form' }
+      meta: { title: '控制台', icon: 'example' }
     }]
   }
 
@@ -156,32 +155,33 @@ export const asyncRouterMap = [
     component: Layout,
     meta: {
       title: '用户管理',
-      icon: 'nested'
+      icon: 'user'
     },
     children: [
       {
         path: 'userlist',
         name: '用户列表',
         component: () => import('@/views/users/userlist'),
-        meta: { title: '用户列表', icon: 'form' }
+        meta: { title: '用户列表', icon: 'user' }
       },
       {
         path: 'adduser',
         name: '新增用户',
+        hidden: true,
         component: () => import('@/views/users/adduser'),
-        meta: { title: '新增用户', icon: 'form', role: ['超级管理员', '管理员'] }
+        meta: { title: '新增用户', icon: 'user', role: ['超级管理员', '管理员'] }
       },
       {
         path: 'edituser',
         name: '修改信息',
         component: () => import('@/views/users/edituser'),
-        meta: { title: '修改个人信息', icon: 'form' }
+        meta: { title: '修改个人信息', icon: 'user' }
       },
       {
         path: 'editpass',
         name: '修改密码',
         component: () => import('@/views/users/editpass'),
-        meta: { title: '修改密码', icon: 'form' }
+        meta: { title: '修改密码', icon: 'user' }
       }
     ]
   },
@@ -190,14 +190,14 @@ export const asyncRouterMap = [
     component: Layout,
     meta: {
       title: '角色管理',
-      icon: 'nested'
+      icon: 'user'
     },
     children: [
       {
         path: 'rolelist',
         name: '角色管理',
         component: () => import('@/views/roles/roleslist'),
-        meta: { title: '角色管理', icon: 'nested' }
+        meta: { title: '角色管理', icon: 'user' }
       }
     ]
   },
@@ -206,14 +206,14 @@ export const asyncRouterMap = [
     component: Layout,
     meta: {
       title: '权限管理',
-      icon: 'nested'
+      icon: 'user'
     },
     children: [
       {
         path: 'powerlist',
         name: '权限管理',
         component: () => import('@/views/power/powerlist'),
-        meta: { title: '权限管理', icon: 'nested' }
+        meta: { title: '权限管理', icon: 'user' }
       }
     ]
   },
@@ -222,7 +222,7 @@ export const asyncRouterMap = [
     component: Layout,
     meta: {
       title: '文章管理',
-      icon: 'nested'
+      icon: 'form'
     },
     children: [
       {
@@ -251,14 +251,14 @@ export const asyncRouterMap = [
     component: Layout,
     meta: {
       title: '活动管理',
-      icon: 'nested'
+      icon: 'form'
     },
     children: [
       {
         path: 'list',
         name: '活动管理',
         component: () => import('@/views/activity/list'),
-        meta: { title: '活动管理', icon: 'nested' }
+        meta: { title: '活动管理', icon: 'form' }
       }
     ]
   },
@@ -267,14 +267,14 @@ export const asyncRouterMap = [
     component: Layout,
     meta: {
       title: '报名管理',
-      icon: 'nested'
+      icon: 'form'
     },
     children: [
       {
         path: 'list',
         name: '报名管理',
         component: () => import('@/views/aec/list'),
-        meta: { title: '报名管理', icon: 'nested' }
+        meta: { title: '报名管理', icon: 'form' }
       }
     ]
   },

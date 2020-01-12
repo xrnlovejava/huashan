@@ -20,7 +20,7 @@ const news = {
     // 新增文章
     addNews({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        addNews(Info.title, store.getters.nickname, Info.content, Info.status).then(response => {
+        addNews(Info.title, store.getters.nickname, Info.content, Info.status, Info.type, Info.activityPo).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -30,7 +30,7 @@ const news = {
     // 修改文章信息
     editNews({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        editNews(parseInt(Info.id), Info.title, store.getters.nickname, Info.content, Info.status).then(response => {
+        editNews(parseInt(Info.newsId), Info.title, store.getters.nickname, Info.content, Info.status).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

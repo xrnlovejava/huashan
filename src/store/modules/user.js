@@ -122,7 +122,7 @@ const user = {
     // 修改用户信息
     editUser({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
-        editUser(userInfo.id, userInfo.userNo, userInfo.nickName, userInfo.fullName, userInfo.phone, userInfo.introduction, userInfo.birthday, parseInt(userInfo.gender)).then(response => {
+        editUser(userInfo.id, userInfo.userNo, userInfo.nickName, userInfo.fullName, userInfo.phone, userInfo.introduction, userInfo.birthday, parseInt(userInfo.gender), userInfo.avatar).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

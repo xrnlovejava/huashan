@@ -2,44 +2,42 @@ import request from '@/utils/request'
 
 export function getAecByParam(data) {
   return request({
-    url: '/aec/select',
+    url: '/aec/byParam',
     method: 'post',
     data: data
   })
 }
 
-export function getAecById(id) {
+export function getAecById(articleId) {
   return request({
     url: '/aec/byId',
     method: 'post',
     data: {
-      id
+      articleId
     }
   })
 }
 
-export function addAec(title, author, content, status) {
+export function addAec(articleId, userId, status) {
   return request({
     url: '/aec/add',
     method: 'post',
     data: {
-      title,
-      author,
-      content,
+      articleId,
+      userId,
       status
     }
   })
 }
 
-export function editAec(id, title, author, content, status) {
+export function editAec(articleId, userId, status) {
+  console.log(articleId, userId, status)
   return request({
     url: '/aec/update',
     method: 'post',
     data: {
-      id,
-      title,
-      author,
-      content,
+      articleId,
+      userId,
       status
     }
   })

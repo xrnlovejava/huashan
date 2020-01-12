@@ -17,7 +17,7 @@ export function addUser(userNo, nickName, loginPass, fullName, phone, introducti
   })
 }
 
-export function editUser(id, userNo, nickName, fullName, phone, introduction, birthday, gender) {
+export function editUser(id, userNo, nickName, fullName, phone, introduction, birthday, gender, avatar) {
   return request({
     url: '/user/update',
     method: 'post',
@@ -29,7 +29,8 @@ export function editUser(id, userNo, nickName, fullName, phone, introduction, bi
       phone,
       introduction,
       birthday,
-      gender
+      gender,
+      avatar
     }
   })
 }

@@ -1,25 +1,25 @@
 <template>
   <div class="main">
     <el-form :inline="true" :model="userinfo">
-      <el-form-item label="id">
+      <el-form-item label="ID">
         <el-input v-model="userinfo.id" placeholder="用户ID"/>
       </el-form-item>
-      <el-form-item label="nickName">
+      <el-form-item label="昵称">
         <el-input v-model="userinfo.nickName" placeholder="昵称"/>
       </el-form-item>
-      <el-form-item label="fullName">
+      <el-form-item label="姓名">
         <el-input v-model="userinfo.fullName" placeholder="姓名"/>
       </el-form-item>
-      <el-form-item label="phone">
+      <el-form-item label="电话">
         <el-input v-model="userinfo.phone" placeholder="手机号"/>
       </el-form-item>
-      <el-form-item label="status">
+      <el-form-item label="状态">
         <el-select v-model="userinfo.status" placeholder="账号状态" clearable>
           <el-option :value="1" label="启用" />
           <el-option :value="0" label="停用" />
         </el-select>
       </el-form-item>
-      <el-form-item label="userType	">
+      <el-form-item label="类型">
         <el-select v-model="userinfo.userType" placeholder="用户类型" clearable>
           <el-option :value="0" label="普通用户" />
           <el-option :value="1" label="VIP用户" />
@@ -41,38 +41,42 @@
       <el-table-column label="userNo" width="55">
         <template slot-scope="scope">{{ scope.row.userNo }}</template>
       </el-table-column>
-      <el-table-column label="nickName">
+      <el-table-column label="昵称">
         <template slot-scope="scope">{{ scope.row.nickName }}</template>
       </el-table-column>
-      <el-table-column label="fullName">
+      <el-table-column label="姓名">
         <template slot-scope="scope">{{ scope.row.fullName }}</template>
       </el-table-column>
-      <el-table-column label="phone">
+      <el-table-column label="电话">
         <template slot-scope="scope">{{ scope.row.phone }}</template>
       </el-table-column>
-      <el-table-column label="introduction">
+      <el-table-column label="简介">
         <template slot-scope="scope">{{ scope.row.introduction }}</template>
       </el-table-column>
-      <el-table-column label="birthday">
+      <el-table-column label="生日">
         <template slot-scope="scope">{{ scope.row.birthday }}</template>
       </el-table-column>
-      <el-table-column label="gender">
-        <template slot-scope="scope">{{ scope.row.gender }}</template>
+      <el-table-column label="性别">
+        <template slot-scope="scope">
+          <div v-if="scope.row.gender == 0">保密</div>
+          <div v-if="scope.row.gender == 1">男</div>
+          <div v-if="scope.row.gender == 2">女</div>
+        </template>
       </el-table-column>
-      <el-table-column label="status">
+      <el-table-column label="状态">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="2" active-color="#13ce66" inactive-color="#ff4949" @change="statusChange(scope.row)"/>
           {{ scope.row.status==1?"启用":"停用" }}
         </template>
       </el-table-column>
-      <el-table-column label="userType">
+      <el-table-column label="用户类型">
         <template slot-scope="scope">
           <el-select v-model="scope.row.userType" placeholder="请选择" @change="usertypeChange(scope.row)">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"/>
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="avatar">
+      <el-table-column label="头像">
         <template slot-scope="scope">
           <img :src="scope.row.avatar" class="circleImg" >
         </template>
@@ -115,31 +119,33 @@
         <el-form-item :label-width="formLabelWidth" label="userNo">
           <el-input v-model="form.userNo" auto-complete="off" />
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="nickName">
+        <el-form-item :label-width="formLabelWidth" label="昵称">
           <el-input v-model="form.nickName" auto-complete="off" />
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="loginPass">
+        <el-form-item :label-width="formLabelWidth" label="密码">
           <el-input v-model="form.loginPass" auto-complete="off" placeholder="如不需要修改请留空"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="fullName">
+        <el-form-item :label-width="formLabelWidth" label="姓名">
           <el-input v-model="form.fullName" auto-complete="off" />
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="phone">
+        <el-form-item :label-width="formLabelWidth" label="电话">
           <el-input v-model="form.phone" auto-complete="off" />
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="introduction">
+        <el-form-item :label-width="formLabelWidth" label="简介">
           <el-input v-model="form.introduction" auto-complete="off" />
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="birthday">
+        <el-form-item :label-width="formLabelWidth" label="生日">
           <el-date-picker v-model="form.birthday" type="date" placeholder="birthday" style="width: 100%;" />
         </el-form-item>
-        <el-form-item label="gender">
+        <el-form-item label="性别">
           <el-radio v-model="form.gender" :label="1">男</el-radio>
           <el-radio v-model="form.gender" :label="2">女</el-radio>
           <el-radio v-model="form.gender" :label="0">保密</el-radio>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="avatar">
-          <el-input v-model="form.avatar" auto-complete="off" />
+        <el-form-item :label-width="formLabelWidth" label="头像">
+          <el-input v-model="form.avatar" auto-complete="off" placeholder="输入头像链接或直接上传"/>
+          <img v-if="form.avatar" :src="form.avatar" class="circleImg" >
+          <input ref="avatarInput" type="file" accept="image/*" @change="imgChange($event)" >
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -260,7 +266,6 @@ export default {
         })
     },
     usertypeChange(row) {
-      console.log(row)
       this.$store
         .dispatch('updateUserType', row)
         .then(response => {
@@ -336,6 +341,18 @@ export default {
           })
       }
       this.buttonloading = false
+    },
+    imgChange(files) {
+      // 第一步.将图片上传到服务器.
+      var formdata = new FormData()
+      formdata.append('file', files.target.files[0])
+      this.$store.dispatch('uploadImg', formdata).then(response => {
+        // 反写返回的图片链接
+        this.form.avatar = response.result
+        this.message('图片上传成功', 'success')
+      }).catch(() => {
+        this.message('图片上传失败', 'error')
+      })
     }
   }
 }

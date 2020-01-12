@@ -26,7 +26,7 @@ export function getNewsById(id) {
   })
 }
 
-export function addNews(title, author, content, status) {
+export function addNews(title, author, content, status, type, activityPo) {
   return request({
     url: '/news/add',
     method: 'post',
@@ -34,17 +34,19 @@ export function addNews(title, author, content, status) {
       title,
       author,
       content,
-      status
+      status,
+      type,
+      activityPo
     }
   })
 }
 
-export function editNews(id, title, author, content, status) {
+export function editNews(newsId, title, author, content, status) {
   return request({
     url: '/news/update',
     method: 'post',
     data: {
-      id,
+      newsId,
       title,
       author,
       content,

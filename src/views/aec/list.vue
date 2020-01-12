@@ -31,12 +31,18 @@
       <el-table-column label="审批状态">
         <template slot-scope="scope">{{ scope.row.status==0?"不同意":"同意" }}</template>
       </el-table-column>
+      <el-table-column label="相关信息" width="220">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="routerTo('活动管理', scope.row.articleId)">相关活动</el-button>
+          <el-button size="mini" @click="routerTo('文章列表', scope.row.articleId)">相关文章</el-button>
+        </template>
+      </el-table-column>
       <el-table-column label="主键ID">
         <template slot-scope="scope">{{ scope.row.id }}</template>
       </el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.row.articleId)">编辑</el-button>
+          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.articleId)">删除</el-button>
         </template>
       </el-table-column>
@@ -53,6 +59,15 @@
           <el-button-group>
             <el-button plain icon="el-icon-delete" @click="deleteMany()">删除所选</el-button>
             <el-button plain icon="el-icon-plus" @click="handleAdd()">新增报名</el-button>
+          </el-button-group>
+        </div>
+      </el-col>
+      <el-col :span="5" :offset="12">
+        <div class="grid-content bg-purple-light">
+          <el-button-group>
+            <el-button :disabled="searchInfo.pageNum === 1?true:false" plain icon="el-icon-arrow-left" @click="page('up')">上一页</el-button>
+            <el-button plain>{{ searchInfo.pageNum }}</el-button>
+            <el-button plain @click="page('down')">下一页<i class="el-icon-arrow-right el-icon--right" /></el-button>
           </el-button-group>
         </div>
       </el-col>
@@ -180,6 +195,7 @@ export default {
     },
     onSubmit() {
       this.buttonloading = true
+      this.form.userId = parseInt(this.form.userId)
       if (this.edittype === '修改报名信息') {
         this.$store
           .dispatch('editAec', this.form)
@@ -206,6 +222,15 @@ export default {
           })
       }
       this.buttonloading = false
+    },
+    routerTo(name, articleId) {
+      this.$router.push({
+        name: name,
+        params: {
+          newsId: articleId,
+          articleId: articleId
+        }
+      })
     }
   }
 }
