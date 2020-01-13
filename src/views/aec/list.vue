@@ -117,6 +117,9 @@ export default {
     }
   },
   created: function() {
+    if (this.$route.params.articleId) {
+      this.searchInfo.articleId = this.$route.params.articleId
+    }
     this.getList()
   },
   methods: {

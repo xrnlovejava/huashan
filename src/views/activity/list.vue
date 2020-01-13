@@ -82,9 +82,10 @@
       <el-table-column label="主键ID" width="100">
         <template slot-scope="scope">{{ scope.row.id }}</template>
       </el-table-column>
-      <el-table-column label="对应文章" width="110">
+      <el-table-column label="相关信息" width="220">
         <template slot-scope="scope">
-          <el-button size="mini" @click="routerTo(scope.row.articleId)">查看文章</el-button>
+          <el-button size="mini" @click="routerTo('文章列表', scope.row.articleId)">对应文章</el-button>
+          <el-button size="mini" @click="routerTo('报名管理', scope.row.articleId)">对应报名</el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="150">
@@ -303,11 +304,12 @@ export default {
       }
       this.buttonloading = false
     },
-    routerTo(articleId) {
+    routerTo(name, articleId) {
       this.$router.push({
-        name: `文章列表`,
+        name: name,
         params: {
-          newsId: articleId
+          newsId: articleId,
+          articleId: articleId
         }
       })
     }

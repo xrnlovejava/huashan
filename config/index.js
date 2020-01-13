@@ -11,13 +11,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/': { //这个是公共部分http://aaa.bbb.com/lizi
-        target: 'http://101.201.41.41:8872', //真实的服务器地址1
+        //target: 'http://101.201.41.41:8872', //真实的服务器地址1
+        target: 'http://192.168.120.131:8872', //真实的服务器地址1
         changeOrigin: true //开启代理
       }
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '192.168.136.66', // can be overwritten by process.env.HOST
     port: 9528, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

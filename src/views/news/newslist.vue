@@ -2,7 +2,7 @@
   <div class="main">
     <el-form :inline="true" :model="newsinfo">
       <el-form-item label="文章ID">
-        <el-input v-model="newsinfo.id" placeholder="id"/>
+        <el-input v-model="newsinfo.newsId" placeholder="id"/>
       </el-form-item>
       <el-form-item label="文章标题">
         <el-input v-model="newsinfo.title" placeholder="title"/>
@@ -80,7 +80,7 @@ export default {
       multipleSelection: [],
       form: {},
       newsinfo: {
-        id: '',
+        newsId: '',
         author: '',
         title: '',
         status: '',
@@ -91,7 +91,7 @@ export default {
   },
   created: function() {
     if (this.$route.params.newsId) {
-      this.newsinfo.id = this.$route.params.newsId
+      this.newsinfo.newsId = this.$route.params.newsId
     }
     this.getNewsList()
   },
