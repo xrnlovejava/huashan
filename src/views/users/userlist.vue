@@ -56,7 +56,7 @@
       <el-table-column label="生日">
         <template slot-scope="scope">{{ scope.row.birthday }}</template>
       </el-table-column>
-      <el-table-column label="性别">
+      <el-table-column label="性别" width="50">
         <template slot-scope="scope">
           <div v-if="scope.row.gender == 0">保密</div>
           <div v-if="scope.row.gender == 1">男</div>
@@ -76,7 +76,7 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="头像">
+      <el-table-column label="头像" width="77">
         <template slot-scope="scope">
           <img :src="scope.row.avatar" class="circleImg" >
         </template>

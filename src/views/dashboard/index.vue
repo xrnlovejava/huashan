@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container">
+    <h3>控制台页面完善中...</h3>
     <div class="dashboard-text">name:{{ nickname }}</div>
     <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div>
   </div>
