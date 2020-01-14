@@ -135,7 +135,7 @@
           <el-input v-model="form.introduction" auto-complete="off" />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="生日">
-          <el-date-picker v-model="form.birthday" type="date" placeholder="birthday" style="width: 100%;" />
+          <el-date-picker v-model="form.birthday" type="date" value-format="yyyy-MM-dd" placeholder="birthday" style="width: 100%;" />
         </el-form-item>
         <el-form-item label="性别">
           <el-radio v-model="form.gender" :label="1">男</el-radio>

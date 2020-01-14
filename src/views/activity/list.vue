@@ -95,6 +95,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-col :span="24">
+      <div class="el-table-add-row" style="width: 99.2%;" @click="handleAdd()">
+        <span>+ 添加</span>
+      </div>
+    </el-col>
+    <br><br><br>
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="grid-content bg-purple">
@@ -113,11 +119,10 @@
         </div>
       </el-col>
     </el-row>
-
     <el-dialog :visible.sync="dialogFormVisible" :title="edittype">
       <el-form :model="form">
         <el-form-item :label-width="formLabelWidth" label="活动ID">
-          <el-input :disabled="true" v-model="form.articleId" auto-complete="off" />
+          <el-input :disabled="false" v-model="form.articleId" auto-complete="off" />
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="最多参与人数">
           <el-input v-model="form.activityCount" auto-complete="off" />
@@ -126,17 +131,11 @@
           <el-radio v-model="form.userLevel" :label="10">普通</el-radio>
           <el-radio v-model="form.userLevel" :label="20">VIP</el-radio>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="报名开始时间">
-          <el-date-picker v-model="form.enrollStartDate" type="date" placeholder="报名开始时间" style="width: 100%;" />
+        <el-form-item :label-width="formLabelWidth" label="报名时间">
+          <el-date-picker v-model="enrollDate" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="报名结束时间">
-          <el-date-picker v-model="form.enrollEndDate" type="date" placeholder="报名结束时间" style="width: 100%;" />
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="活动开始时间">
-          <el-date-picker v-model="form.startDate" type="date" placeholder="活动开始时间" style="width: 100%;" />
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" label="活动结束时间">
-          <el-date-picker v-model="form.endDate" type="date" placeholder="活动结束时间" style="width: 100%;" />
+        <el-form-item :label-width="formLabelWidth" label="活动时间">
+          <el-date-picker v-model="actDate" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
         </el-form-item>
         <el-form-item label="活动性别">
           <el-radio v-model="form.gender" :label="1">男</el-radio>
@@ -165,6 +164,8 @@ export default {
       loading: true,
       tableData: [],
       multipleSelection: [],
+      enrollDate: [],
+      actDate: [],
       searchInfo: {
         id: '',
         articleId: '',
@@ -237,6 +238,8 @@ export default {
       this.edittype = '修改活动信息'
       this.form = this.tableData[index]
       this.currentIndex = index
+      this.enrollDate = [row.enrollStartDate, row.enrollEndDate]
+      this.actDate = [row.startDate, row.endDate]
       this.dialogFormVisible = true
     },
     handleDelete(id) {
@@ -277,6 +280,10 @@ export default {
       this.buttonloading = true
       this.form.articleId = parseInt(this.form.articleId)
       this.form.activityCount = parseInt(this.form.activityCount)
+      this.form.enrollStartDate = this.enrollDate[0]
+      this.form.enrollEndDate = this.enrollDate[1]
+      this.form.startDate = this.actDate[0]
+      this.form.endDate = this.actDate[1]
       if (this.edittype === '修改活动信息') {
         this.$store
           .dispatch('editActivity', this.form)

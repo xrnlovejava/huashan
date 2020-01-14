@@ -11,7 +11,7 @@
         <el-option :value="0" label="未发布" />
       </el-select>
       <el-button v-loading="but_loading" type="primary" @click="addNews">提交</el-button>
-      <el-button v-loading="but_loading" @click="addactivity">设为活动</el-button>
+      <el-button v-if="newsform.type==999" @click="addactivity">设为活动</el-button>
     </el-form>
     <mavon-editor v-loading="loading" ref="md" :ishljs = "true" v-model="newsform.content" element-loading-text="图片上传中..." @imgAdd="$imgAdd" @imgDel="$imgDel"/>
 

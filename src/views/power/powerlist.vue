@@ -128,7 +128,7 @@ export default {
       },
       edittype: '',
       buttonloading: false,
-      formLabelWidth: '80px'
+      formLabelWidth: '100px'
     }
   },
   created: function() {

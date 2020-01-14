@@ -20,7 +20,7 @@
         <el-input v-model="form.introduction" />
       </el-form-item>
       <el-form-item label="birthday">
-        <el-date-picker v-model="form.birthday" type="date" placeholder="birthday" style="width: 100%;" />
+        <el-date-picker v-model="form.birthday" type="date" placeholder="birthday" value-format="yyyy-MM-dd" style="width: 100%;" />
       </el-form-item>
       <el-form-item label="gender">
         <el-radio v-model="form.gender" :label="1">男</el-radio>

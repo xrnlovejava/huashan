@@ -10,7 +10,7 @@
       mode="vertical"
     >
       <a href="/">
-        <img src="https://vehicle-1231.oss-cn-beijing.aliyuncs.com/epc-asset/amVehicleExport/2020-01-12/7f8a54840c1143a1917a9606bf9f12c5.png" style="width:180px">
+        <img src="@/assets/img/logo.jpg" style="width:180px">
       </a>
       <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path"/>
       <sidebar-item v-for="route in routes2" :key="route.path" :item="route" :base-path="route.path"/>

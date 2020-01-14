@@ -11,6 +11,7 @@
         <el-option :value="0" label="未发布" />
       </el-select>
       <el-button v-loading="but_loading" type="primary" @click="editNews">提交</el-button>
+      <el-button v-if="newsform.type==999" @click="routerTo(newsform.newsId)">相关活动</el-button>
     </el-form>
     <mavon-editor v-loading="loading" ref="md" :ishljs = "true" v-model="newsform.content" element-loading-text="图片上传中..." @imgAdd="$imgAdd" @imgDel="$imgDel"/>
   </div>
@@ -25,7 +26,8 @@ export default {
         newsId: this.$route.params.newsId,
         title: '',
         content: '',
-        status: 0
+        status: 0,
+        type: 0
       }
     }
   },
@@ -44,6 +46,7 @@ export default {
         this.newsform.title = response.result.title
         this.newsform.content = response.result.content
         this.newsform.status = response.result.status
+        this.newsform.type = response.result.type
       }).catch(() => {
         this.message('文章数据获取失败', 'error')
       })
@@ -72,6 +75,14 @@ export default {
         this.message('图片上传成功', 'success')
       }).catch(() => {
         this.message('图片上传失败', 'error')
+      })
+    },
+    routerTo(newsId) {
+      this.$router.push({
+        name: `活动管理`,
+        params: {
+          articleId: newsId
+        }
       })
     }
   }
