@@ -1,26 +1,26 @@
 <template>
   <div class="main">
     <el-form :inline="true" :model="searchInfo">
-      <el-form-item label="活动ID">
+      <el-form-item label="ID">
         <el-input v-model="searchInfo.articleId" placeholder="活动ID" clearable/>
       </el-form-item>
-      <el-form-item label="人数">
-        <el-input v-model="searchInfo.activityCount" placeholder="最多参与人数" clearable/>
+      <el-form-item label="标题">
+        <el-input v-model="searchInfo.articleTitle" placeholder="活动标题" clearable/>
       </el-form-item>
-      <el-form-item label="级别">
-        <el-input v-model="searchInfo.userLevel" placeholder="用户级别" clearable/>
+      <el-form-item label="描述">
+        <el-input v-model="searchInfo.articleDesc" placeholder="活动描述" clearable/>
       </el-form-item>
       <el-form-item label="报名开始">
-        <el-date-picker v-model="searchInfo.enrollStartDate" type="date" placeholder="报名开始时间" style="width: 100%;" clearable/>
+        <el-date-picker v-model="searchInfo.enrollStartDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="报名开始时间" style="width: 100%;" clearable/>
       </el-form-item>
       <el-form-item label="报名结束">
-        <el-date-picker v-model="searchInfo.enrollEndDate" type="date" placeholder="报名结束时间" style="width: 100%;" clearable/>
+        <el-date-picker v-model="searchInfo.enrollEndDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="报名结束时间" style="width: 100%;" clearable/>
       </el-form-item>
       <el-form-item label="活动开始">
-        <el-date-picker v-model="searchInfo.startDate" type="date" placeholder="活动开始时间" style="width: 100%;" clearable/>
+        <el-date-picker v-model="searchInfo.startDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="活动开始时间" style="width: 100%;" clearable/>
       </el-form-item>
       <el-form-item label="活动结束">
-        <el-date-picker v-model="searchInfo.endDate" type="date" placeholder="活动结束时间" style="width: 100%;" clearable/>
+        <el-date-picker v-model="searchInfo.endDate" type="date" value-format="yyyy-MM-dd HH:mm:ss" placeholder="活动结束时间" style="width: 100%;" clearable/>
       </el-form-item>
       <el-form-item label="性别">
         <el-select v-model="searchInfo.gender" placeholder="性别" clearable>
@@ -37,32 +37,60 @@
           <el-option :value="4" label="结束" />
         </el-select>
       </el-form-item>
-      <el-form-item label="主键ID">
-        <el-input v-model="searchInfo.id" placeholder="主键ID" clearable/>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList">查询</el-button>
       </el-form-item>
     </el-form>
     <el-table v-loading="loading" :data="tableData" style="width: 100%" stripe border @selection-change="handleSelectionChange">
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+          <el-form label-position="left" class="demo-table-expand">
+            <el-form-item label="活动描述">
+              <span>{{ scope.row.articleDesc }}</span>
+            </el-form-item>
+            <el-form-item label="活动链接">
+              <span><a :href="scope.row.articleLink" target="_blank">{{ scope.row.articleLink }}</a></span>
+            </el-form-item>
+            <el-form-item label="报名开始时间">
+              <span>{{ scope.row.enrollStartDate }}</span>
+            </el-form-item>
+            <el-form-item label="报名结束时间">
+              <span>{{ scope.row.enrollEndDate }}</span>
+            </el-form-item>
+            <el-form-item label="活动开始时间">
+              <span>{{ scope.row.startDate }}</span>
+            </el-form-item>
+            <el-form-item label="活动结束时间">
+              <span>{{ scope.row.endDate }}</span>
+            </el-form-item>
+            <el-form-item label="头图">
+              <span><img :src="scope.row.imageUrl" class="circleImg" ></span>
+            </el-form-item>
+            <el-form-item label="文章顶部大图">
+              <span><img :src="scope.row.bannerUrl" class="circleImg" ></span>
+            </el-form-item>
+          </el-form>
+        </template>
+      </el-table-column>
       <el-table-column type="selection" width="50" />
       <el-table-column label="活动ID" width="200">
         <template slot-scope="scope">{{ scope.row.articleId }}</template>
       </el-table-column>
+      <el-table-column label="活动标题">
+        <template slot-scope="scope"><a :href="scope.row.articleLink" target="_blank">{{ scope.row.articleTitle }}</a></template>
+      </el-table-column>
+      <el-table-column label="活动类型">
+        <template slot-scope="scope">
+          <div v-if="scope.row.articleType == 0">咨询文章</div>
+          <div v-if="scope.row.articleType == 1">活动</div>
+          <div v-if="scope.row.articleType == 2">微信文章</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="最多参与人数" width="200">
+        <template slot-scope="scope">{{ scope.row.activityCount }}</template>
+      </el-table-column>
       <el-table-column label="用户级别限制" width="120">
         <template slot-scope="scope">{{ scope.row.userLevel==10?"普通":"VIP" }}</template>
-      </el-table-column>
-      <el-table-column label="报名开始时间" width="160">
-        <template slot-scope="scope">{{ scope.row.enrollStartDate }}</template>
-      </el-table-column>
-      <el-table-column label="报名结束时间" width="160">
-        <template slot-scope="scope">{{ scope.row.enrollEndDate }}</template>
-      </el-table-column>
-      <el-table-column label="活动开始时间" width="160">
-        <template slot-scope="scope">{{ scope.row.startDate }}</template>
-      </el-table-column>
-      <el-table-column label="活动结束时间" width="160">
-        <template slot-scope="scope">{{ scope.row.endDate }}</template>
       </el-table-column>
       <el-table-column label="性别" width="100">
         <template slot-scope="scope">
@@ -79,10 +107,7 @@
           <div v-if="scope.row.status == 4">结束</div>
         </template>
       </el-table-column>
-      <el-table-column label="主键ID" width="100">
-        <template slot-scope="scope">{{ scope.row.id }}</template>
-      </el-table-column>
-      <el-table-column label="相关信息" width="220">
+      <el-table-column label="相关信息" width="110">
         <template slot-scope="scope">
           <el-button size="mini" @click="routerTo('文章列表', scope.row.articleId)">对应文章</el-button>
           <el-button size="mini" @click="routerTo('报名管理', scope.row.articleId)">对应报名</el-button>
@@ -121,13 +146,15 @@
     </el-row>
     <el-dialog :visible.sync="dialogFormVisible" :title="edittype">
       <el-form :model="form">
-        <el-form-item :label-width="formLabelWidth" label="活动ID">
-          <el-input :disabled="false" v-model="form.articleId" auto-complete="off" />
+        <el-form-item :label-width="formLabelWidth" label="活动标题">
+          <el-select v-model="form.articleId" placeholder="请选择" @change="getNewsInfo(form.articleId)">
+            <el-option v-for="item in newsTableData" :key="item.newsId" :label="item.title" :value="item.newsId"/>
+          </el-select>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="最多参与人数">
           <el-input v-model="form.activityCount" auto-complete="off" />
         </el-form-item>
-        <el-form-item label="用户级别限制">
+        <el-form-item :label-width="formLabelWidth" label="用户级别限制">
           <el-radio v-model="form.userLevel" :label="10">普通</el-radio>
           <el-radio v-model="form.userLevel" :label="20">VIP</el-radio>
         </el-form-item>
@@ -137,16 +164,30 @@
         <el-form-item :label-width="formLabelWidth" label="活动时间">
           <el-date-picker v-model="actDate" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
         </el-form-item>
-        <el-form-item label="活动性别">
+        <el-form-item :label-width="formLabelWidth" label="活动性别">
           <el-radio v-model="form.gender" :label="1">男</el-radio>
           <el-radio v-model="form.gender" :label="2">女</el-radio>
           <el-radio v-model="form.gender" :label="0">全员</el-radio>
         </el-form-item>
-        <el-form-item label="活动状态">
+        <el-form-item :label-width="formLabelWidth" label="活动状态">
           <el-radio v-model="form.status" :label="1">开始报名</el-radio>
           <el-radio v-model="form.status" :label="2">开始审核</el-radio>
           <el-radio v-model="form.status" :label="3">活动中</el-radio>
           <el-radio v-model="form.status" :label="4">结束</el-radio>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="活动描述">
+          <el-input v-model="form.articleMappingPo.articleDesc" auto-complete="off" />
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="活动类型">
+          <el-radio v-model="form.articleMappingPo.articleType" :label="0">咨询文章</el-radio>
+          <el-radio v-model="form.articleMappingPo.articleType" :label="1">活动</el-radio>
+          <el-radio v-model="form.articleMappingPo.articleType" :label="2">微信文章</el-radio>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="头图">
+          <el-input v-model="form.articleMappingPo.imageUrl" auto-complete="off" />
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" label="文章顶部图片">
+          <el-input v-model="form.articleMappingPo.bannerUrl" auto-complete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -166,11 +207,11 @@ export default {
       multipleSelection: [],
       enrollDate: [],
       actDate: [],
+      titleIndex: '',
       searchInfo: {
-        id: '',
         articleId: '',
-        activityCount: '',
-        userLevel: '',
+        articleTitle: '',
+        articleDesc: '',
         enrollStartDate: '',
         enrollEndDate: '',
         startDate: '',
@@ -180,8 +221,17 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
+      newsTableData: [],
       dialogFormVisible: false,
-      form: {},
+      form: {
+        articleMappingPo: {
+          articleTitle: '',
+          articleDesc: '',
+          imageUrl: '',
+          bannerUrl: '',
+          articleType: ''
+        }
+      },
       edittype: '',
       buttonloading: false,
       formLabelWidth: '100px'
@@ -209,6 +259,21 @@ export default {
       }).catch(() => {
         this.loading = false
       })
+    },
+    getNewsList() {
+      const newsinfo = { newsId: '' }
+      this.$store.dispatch('getNewsByParam', newsinfo).then(response => {
+        this.newsTableData = response.result.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    getNewsInfo(articleId) {
+      for (const newsInfo of this.newsTableData) {
+        if (newsInfo['newsId'] === articleId) {
+          this.form.articleMappingPo['articleTitle'] = newsInfo['title']
+        }
+      }
     },
     page(type) {
       if (type === 'up') {
@@ -240,6 +305,13 @@ export default {
       this.currentIndex = index
       this.enrollDate = [row.enrollStartDate, row.enrollEndDate]
       this.actDate = [row.startDate, row.endDate]
+      this.form['articleMappingPo'] = {}
+      this.form['articleMappingPo']['articleTitle'] = this.tableData[index].articleTitle
+      this.form['articleMappingPo']['articleDesc'] = this.tableData[index]['articleDesc']
+      this.form['articleMappingPo']['imageUrl'] = this.tableData[index]['imageUrl']
+      this.form['articleMappingPo']['bannerUrl'] = this.tableData[index]['bannerUrl']
+      this.form['articleMappingPo']['articleType'] = this.tableData[index]['articleType']
+      this.getNewsList()
       this.dialogFormVisible = true
     },
     handleDelete(id) {
@@ -268,12 +340,13 @@ export default {
         userLevel: '',
         enrollStartDate: '',
         enrollEndDate: '',
-        introduction: '',
         startDate: '',
         endDate: '',
         gender: '',
-        status: ''
+        status: '',
+        articleMappingPo: {}
       }
+      this.getNewsList()
       this.dialogFormVisible = true
     },
     onSubmit() {
@@ -339,5 +412,10 @@ export default {
   justify-content: center;
   display: flex;
   line-height: 34px;
+}
+
+.circleImg{
+  border-radius: 10px;
+  height:55px;
 }
 </style>

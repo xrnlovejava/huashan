@@ -19,7 +19,7 @@ const activity = {
     // 新增活动
     addActivity({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        addActivity(parseInt(Info.articleId), Info.activityCount, Info.userLevel, Info.enrollStartDate, Info.enrollEndDate, Info.startDate, Info.endDate, Info.gender, Info.status).then(response => {
+        addActivity(parseInt(Info.articleId), Info.activityCount, Info.userLevel, Info.enrollStartDate, Info.enrollEndDate, Info.startDate, Info.endDate, Info.gender, Info.status, Info.articleMappingPo).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -29,7 +29,7 @@ const activity = {
     // 修改活动信息
     editActivity({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        editActivity(parseInt(Info.articleId), Info.activityCount, Info.userLevel, Info.enrollStartDate, Info.enrollEndDate, Info.startDate, Info.endDate, Info.gender, Info.status).then(response => {
+        editActivity(Info.id, parseInt(Info.articleId), Info.activityCount, Info.userLevel, Info.enrollStartDate, Info.enrollEndDate, Info.startDate, Info.endDate, Info.gender, Info.status, Info.articleMappingPo).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

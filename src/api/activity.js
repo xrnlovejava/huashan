@@ -18,7 +18,7 @@ export function getActivityById(id) {
   })
 }
 
-export function addActivity(articleId, activityCount, userLevel, enrollStartDate, enrollEndDate, startDate, endDate, gender, status) {
+export function addActivity(articleId, activityCount, userLevel, enrollStartDate, enrollEndDate, startDate, endDate, gender, status, articleMappingPo) {
   return request({
     url: '/activity/add',
     method: 'post',
@@ -31,17 +31,19 @@ export function addActivity(articleId, activityCount, userLevel, enrollStartDate
       startDate,
       endDate,
       gender,
-      status
+      status,
+      articleMappingPo
     }
   })
 }
 
-export function editActivity(articleId, activityCount, userLevel, enrollStartDate, enrollEndDate, startDate, endDate, gender, status) {
-  console.log(articleId, activityCount, userLevel, enrollStartDate, enrollEndDate, startDate, endDate, gender, status)
+export function editActivity(id, articleId, activityCount, userLevel, enrollStartDate, enrollEndDate, startDate, endDate, gender, status, articleMappingPo) {
+  console.log(id, articleId, activityCount, userLevel, enrollStartDate, enrollEndDate, startDate, endDate, gender, status, articleMappingPo)
   return request({
     url: '/activity/update',
     method: 'post',
     data: {
+      id,
       articleId,
       activityCount,
       userLevel,
@@ -50,7 +52,8 @@ export function editActivity(articleId, activityCount, userLevel, enrollStartDat
       startDate,
       endDate,
       gender,
-      status
+      status,
+      articleMappingPo
     }
   })
 }
