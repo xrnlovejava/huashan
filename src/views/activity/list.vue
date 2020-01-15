@@ -73,7 +73,7 @@
         </template>
       </el-table-column>
       <el-table-column type="selection" width="50" />
-      <el-table-column label="活动ID" width="200">
+      <el-table-column label="活动ID">
         <template slot-scope="scope">{{ scope.row.articleId }}</template>
       </el-table-column>
       <el-table-column label="活动标题">
@@ -86,20 +86,20 @@
           <div v-if="scope.row.articleType == 2">微信文章</div>
         </template>
       </el-table-column>
-      <el-table-column label="最多参与人数" width="200">
+      <el-table-column label="最多参与人数">
         <template slot-scope="scope">{{ scope.row.activityCount }}</template>
       </el-table-column>
-      <el-table-column label="用户级别限制" width="120">
+      <el-table-column label="用户级别限制">
         <template slot-scope="scope">{{ scope.row.userLevel==10?"普通":"VIP" }}</template>
       </el-table-column>
-      <el-table-column label="性别" width="100">
+      <el-table-column label="性别" width="50">
         <template slot-scope="scope">
           <div v-if="scope.row.gender == 0">全员</div>
           <div v-if="scope.row.gender == 1">男</div>
           <div v-if="scope.row.gender == 2">女</div>
         </template>
       </el-table-column>
-      <el-table-column label="活动状态" width="100">
+      <el-table-column label="活动状态" width="80">
         <template slot-scope="scope">
           <div v-if="scope.row.status == 1">开始报名</div>
           <div v-if="scope.row.status == 2">开始审核</div>
@@ -107,10 +107,10 @@
           <div v-if="scope.row.status == 4">结束</div>
         </template>
       </el-table-column>
-      <el-table-column label="相关信息" width="110">
+      <el-table-column label="相关信息" width="150">
         <template slot-scope="scope">
-          <el-button size="mini" @click="routerTo('文章列表', scope.row.articleId)">对应文章</el-button>
-          <el-button size="mini" @click="routerTo('报名管理', scope.row.articleId)">对应报名</el-button>
+          <el-button size="mini" @click="routerTo('文章列表', scope.row.articleId)">文章</el-button>
+          <el-button size="mini" @click="routerTo('报名管理', scope.row.articleId)">报名</el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="150">
