@@ -18,6 +18,7 @@ const activity = {
     },
     // 新增活动
     addActivity({ commit }, Info) {
+      console.log(Info)
       return new Promise((resolve, reject) => {
         addActivity(parseInt(Info.articleId), Info.activityCount, Info.userLevel, Info.enrollStartDate, Info.enrollEndDate, Info.startDate, Info.endDate, Info.gender, Info.status, Info.articleMappingPo).then(response => {
           resolve(response)

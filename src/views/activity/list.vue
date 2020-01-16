@@ -184,10 +184,12 @@
           <el-radio v-model="form.articleMappingPo.articleType" :label="2">微信文章</el-radio>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="头图">
-          <el-input v-model="form.articleMappingPo.imageUrl" auto-complete="off" />
+          <img v-if="form.articleMappingPo.imageUrl" :src="form.articleMappingPo.imageUrl" class="circleImg" >
+          <input ref="avatarInput" type="file" accept="image/*" @change="uploadImg('imageUrl', $event)" >
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="文章顶部图片">
-          <el-input v-model="form.articleMappingPo.bannerUrl" auto-complete="off" />
+          <img v-if="form.articleMappingPo.bannerUrl" :src="form.articleMappingPo.bannerUrl" class="circleImg" >
+          <input ref="avatarInput" type="file" accept="image/*" @change="uploadImg('bannerUrl', $event)" >
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -208,6 +210,7 @@ export default {
       enrollDate: [],
       actDate: [],
       titleIndex: '',
+      imgUrl: '',
       searchInfo: {
         articleId: '',
         articleTitle: '',
@@ -274,6 +277,29 @@ export default {
           this.form.articleMappingPo['articleTitle'] = newsInfo['title']
         }
       }
+    },
+    imgChange(name, url) {
+      console.log(name, url)
+      if (name === 'imageUrl') {
+        this.form.articleMappingPo.imageUrl = url
+      } else {
+        this.form.articleMappingPo.bannerUrl = url
+      }
+    },
+    bunnerChange(file) {
+      this.uploadImg(file)
+      this.form.articleMappingPo.bannerUrl = this.imgurl
+    },
+    uploadImg(name, files) {
+      // 第一步.将图片上传到服务器.
+      var formdata = new FormData()
+      formdata.append('file', files.target.files[0])
+      this.$store.dispatch('uploadImg', formdata).then(response => {
+        this.imgChange(name, response.result)
+        this.message('图片上传成功', 'success')
+      }).catch(() => {
+        this.message('图片上传失败', 'error')
+      })
     },
     page(type) {
       if (type === 'up') {
