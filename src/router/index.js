@@ -129,16 +129,22 @@ export const asyncRouterMap = [
       },
       {
         path: 'addnews',
-        name: '新增文章',
+        name: '新增文章(MD)',
         component: () => import('@/views/news/addnews'),
-        meta: { title: '新增文章', icon: 'form' }
+        meta: { title: '新增文章(MD)', icon: 'form' }
       },
       {
         path: 'editnews/:newsId',
-        name: '编辑文章',
+        name: '编辑文章(MD)',
         hidden: true,
         component: () => import('@/views/news/editnews'),
         meta: { title: '编辑文章', icon: 'form' }
+      },
+      {
+        path: 'addnewsv2',
+        name: '新增文章',
+        component: () => import('@/views/news/addnewsv2'),
+        meta: { title: '新增文章', icon: 'form' }
       }
     ]
   },

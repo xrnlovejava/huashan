@@ -117,6 +117,7 @@ export default {
       this.tableData = []
       this.$store.dispatch('getNewsByParam', this.newsinfo).then(response => {
         this.loading = false
+        console.log(response.result.data)
         this.tableData = response.result.data
       }).catch(() => {
         this.loading = false
