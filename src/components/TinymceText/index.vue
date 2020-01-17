@@ -18,8 +18,12 @@ import 'tinymce/plugins/media'// 插入视频插件
 import 'tinymce/plugins/table'// 插入表格插件
 import 'tinymce/plugins/lists'// 列表插件
 import 'tinymce/plugins/wordcount'// 字数统计插件
+import 'tinymce/plugins/help'
+import 'tinymce/plugins/emoticons' // 表情
 // 语言包的路径
 import '@/assets/js/zh_CN.js'
+// 表情
+import '@/assets/tinymce/plugins/emoticons/js/emojis.min.js'
 // css
 import '@/assets/tinymce/skins/ui/oxide/skin.css'
 export default {
@@ -38,11 +42,11 @@ export default {
     },
     plugins: {
       type: [String, Array],
-      default: 'lists image media table wordcount'
+      default: 'lists image media table wordcount silver link code emoticons help'
     },
     toolbar: {
       type: [String, Array],
-      default: 'undo redo |  formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image media table | removeformat'
+      default: 'undo redo |  formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image media table link code emoticons | removeformat'
     }
   },
   data() {
@@ -52,7 +56,7 @@ export default {
         language: 'zh_CN',
         skin_url: '/tinymce/skins/ui/oxide',
         // skin_url: 'tinymce/skins/ui/oxide-dark',//暗色系
-        height: 700,
+        height: 650,
         plugins: this.plugins,
         toolbar: this.toolbar,
         branding: false,
