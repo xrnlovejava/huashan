@@ -51,8 +51,8 @@
           <el-input v-model="newsform.activityPo.activityCount" auto-complete="off" placeholder="最多参与人数"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="报名是否可以超出参与人数">
-          <el-radio v-model="newsform.activityPo.userLevel" :label="0">是</el-radio>
-          <el-radio v-model="newsform.activityPo.userLevel" :label="1">否</el-radio>
+          <el-radio v-model="newsform.activityPo.enrollStatus" :label="0">是</el-radio>
+          <el-radio v-model="newsform.activityPo.enrollStatus" :label="1">否</el-radio>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="用户级别限制">
           <el-radio v-model="newsform.activityPo.userLevel" :label="10">普通</el-radio>

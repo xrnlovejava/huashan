@@ -6,7 +6,7 @@
           <template slot="prepend">文章标题</template>
         </el-input>
       </el-form-item>
-      <el-button v-loading="but_loading" type="primary" @click="addNews">提交</el-button>
+      <el-button v-loading="but_loading" type="primary" @click="editNews">提交</el-button>
       <el-button @click="clear">清空</el-button>
     </el-form>
     <div class="block">
@@ -51,8 +51,8 @@
           <el-input v-model="newsform.activityPo.activityCount" auto-complete="off" placeholder="最多参与人数"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="报名是否可以超出参与人数">
-          <el-radio v-model="newsform.activityPo.userLevel" :label="0">是</el-radio>
-          <el-radio v-model="newsform.activityPo.userLevel" :label="1">否</el-radio>
+          <el-radio v-model="newsform.activityPo.enrollStatus" :label="0">是</el-radio>
+          <el-radio v-model="newsform.activityPo.enrollStatus" :label="1">否</el-radio>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="用户级别限制">
           <el-radio v-model="newsform.activityPo.userLevel" :label="10">普通</el-radio>
@@ -133,19 +133,21 @@ export default {
     },
     getNewsById() {
       this.$store.dispatch('getNewsById', this.newsform.id).then(response => {
-        console.log(response.result)
         this.newsform = response.result
+        if (this.newsform.articleType !== 1) {
+          this.newsform.activityPo = {}
+        }
       }).catch(() => {
         this.message('文章数据获取失败', 'error')
       })
     },
-    addNews() {
+    editNews() {
       if (this.newsform.articleType === 1 && !this.newsform.activityPo.activityCount) {
         this.message('活动文章必须填写活动信息', 'error')
         return
       }
       this.but_loading = true
-      this.$store.dispatch('addNews', this.newsform).then(response => {
+      this.$store.dispatch('editNews', this.newsform).then(response => {
         this.but_loading = false
         this.message('文章提交成功', 'success')
       }).catch(() => {

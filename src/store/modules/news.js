@@ -1,4 +1,4 @@
-import { getNewsByParam, addNews, editNews, delNews, getNewsById, uploadImg, updateStatus } from '@/api/news'
+import { getNewsByParam, addNews, editNews, delNews, getNewsById, uploadImg, updateArticleStatus, deleteActivity } from '@/api/news'
 const news = {
   actions: {
     // 获取文章信息 byParam
@@ -37,9 +37,9 @@ const news = {
       })
     },
     // 根据主键ID修改文章状态
-    updateStatus({ commit }, Info) {
+    updateArticleStatus({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        updateStatus(Info).then(response => {
+        updateArticleStatus(Info).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -50,6 +50,16 @@ const news = {
     delNews({ commit }, id) {
       return new Promise((resolve, reject) => {
         delNews(id).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 删除活动
+    deleteActivity({ commit }, id) {
+      return new Promise((resolve, reject) => {
+        deleteActivity(id).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

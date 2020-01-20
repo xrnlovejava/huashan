@@ -10,7 +10,7 @@
       mode="vertical"
     >
       <a href="/">
-        <img src="@/assets/img/logo.jpg" style="width:180px">
+        <img src="@/assets/img/logo.jpeg" style="width:180px;border-right:1px rgb(48, 65, 86) solid;">
       </a>
       <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path"/>
       <sidebar-item v-for="route in routes2" :key="route.path" :item="route" :base-path="route.path"/>

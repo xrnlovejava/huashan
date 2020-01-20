@@ -2,7 +2,7 @@
   <div class="main">
     <el-form :inline="true" :model="searchInfo">
       <el-form-item label="活动ID">
-        <el-input v-model="searchInfo.articleId" placeholder="活动ID" clearable/>
+        <el-input v-model="searchInfo.activityId" placeholder="活动ID" clearable/>
       </el-form-item>
       <el-form-item label="用户ID">
         <el-input v-model="searchInfo.userId" placeholder="报名的用户ID" clearable/>
@@ -13,9 +13,6 @@
           <el-option :value="1" label="同意" />
         </el-select>
       </el-form-item>
-      <el-form-item label="主键ID">
-        <el-input v-model="searchInfo.id" placeholder="主键ID" clearable/>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList">查询</el-button>
       </el-form-item>
@@ -23,7 +20,7 @@
     <el-table v-loading="loading" :data="tableData" style="width: 100%" stripe border @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" />
       <el-table-column label="活动ID" width="100">
-        <template slot-scope="scope">{{ scope.row.articleId }}</template>
+        <template slot-scope="scope">{{ scope.row.activityId }}</template>
       </el-table-column>
       <el-table-column label="报名的用户ID">
         <template slot-scope="scope">{{ scope.row.userId }}</template>
@@ -31,10 +28,9 @@
       <el-table-column label="审批状态">
         <template slot-scope="scope">{{ scope.row.status==0?"不同意":"同意" }}</template>
       </el-table-column>
-      <el-table-column label="相关信息" width="220">
+      <el-table-column label="相关信息" width="110">
         <template slot-scope="scope">
-          <el-button size="mini" @click="routerTo('活动管理', scope.row.articleId)">相关活动</el-button>
-          <el-button size="mini" @click="routerTo('文章列表', scope.row.articleId)">相关文章</el-button>
+          <el-button size="mini" @click="routerTo('文章列表', scope.row.activityId)">相关活动</el-button>
         </template>
       </el-table-column>
       <el-table-column label="主键ID">
@@ -42,8 +38,8 @@
       </el-table-column>
       <el-table-column label="操作" width="150">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row.articleId)">删除</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,13 +71,15 @@
 
     <el-dialog :visible.sync="dialogFormVisible" :title="edittype">
       <el-form :model="form">
-        <el-form-item :label-width="formLabelWidth" label="活动ID">
-          <el-input v-model="form.articleId" auto-complete="off" />
+        <el-form-item :label-width="formLabelWidth" label="活动">
+          <el-select v-model="form.activityId" placeholder="请选择活动">
+            <el-option v-for="item in newsTableData" :key="item.activityId" :label="item.title" :value="item.activityId"/>
+          </el-select>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="报名的用户ID">
           <el-input v-model="form.userId" auto-complete="off" />
         </el-form-item>
-        <el-form-item label="审批状态">
+        <el-form-item :label-width="formLabelWidth" label="审批状态">
           <el-radio v-model="form.status" :label="0">不同意</el-radio>
           <el-radio v-model="form.status" :label="1">同意</el-radio>
         </el-form-item>
@@ -112,6 +110,7 @@ export default {
       dialogFormVisible: false,
       form: {},
       edittype: '',
+      newsTableData: [],
       buttonloading: false,
       formLabelWidth: '100px'
     }
@@ -139,6 +138,18 @@ export default {
         this.loading = false
       })
     },
+    getActivityList() {
+      const data = {
+        pageSize: 100,
+        pageNum: 1,
+        articleType: 1
+      }
+      this.$store.dispatch('getActivityList', data).then(response => {
+        this.newsTableData = response.result.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
     page(type) {
       if (type === 'up') {
         if (this.searchInfo.pageNum > 1) {
@@ -163,23 +174,20 @@ export default {
         this.handleDelete(ids)
       }
     },
-    handleEdit(index, row) {
+    handleEdit(row) {
       this.edittype = '修改报名信息'
-      this.form = this.tableData[index]
-      this.currentIndex = index
+      this.form = row
+      this.getActivityList()
       this.dialogFormVisible = true
     },
     handleDelete(id) {
-      this.$store
-        .dispatch('delAec', id)
-        .then(response => {
-          const restype = response.code !== '000000' ? 'error' : 'success'
-          this.message(response.message, restype)
-          window.location.reload()
-        })
-        .catch(() => {
-          console.log(id)
-        })
+      this.$store.dispatch('delAec', id).then(response => {
+        const restype = response.code !== '000000' ? 'error' : 'success'
+        this.message(response.message, restype)
+        window.location.reload()
+      }).catch(() => {
+        console.log(id)
+      })
     },
     errorHandler() {
       return true
@@ -190,48 +198,42 @@ export default {
     handleAdd() {
       this.edittype = '新增报名'
       this.form = {
-        articleId: '',
+        activityId: '',
         userId: '',
         status: ''
       }
+      this.getActivityList()
       this.dialogFormVisible = true
     },
     onSubmit() {
       this.buttonloading = true
       this.form.userId = parseInt(this.form.userId)
       if (this.edittype === '修改报名信息') {
-        this.$store
-          .dispatch('editAec', this.form)
-          .then(response => {
-            this.buttonloading = false
-            const restype = response.code !== '000000' ? 'error' : 'success'
-            this.message(response.message, restype)
-            window.location.reload()
-          })
-          .catch(() => {
-            this.buttonloading = false
-          })
+        this.$store.dispatch('editAec', this.form).then(response => {
+          this.buttonloading = false
+          const restype = response.code !== '000000' ? 'error' : 'success'
+          this.message(response.message, restype)
+          window.location.reload()
+        }).catch(() => {
+          this.buttonloading = false
+        })
       } else {
-        this.$store
-          .dispatch('addAec', this.form)
-          .then(response => {
-            this.buttonloading = false
-            const restype = response.code !== '000000' ? 'error' : 'success'
-            this.message(response.message, restype)
-            window.location.reload()
-          })
-          .catch(() => {
-            this.buttonloading = false
-          })
+        this.$store.dispatch('addAec', this.form).then(response => {
+          this.buttonloading = false
+          const restype = response.code !== '000000' ? 'error' : 'success'
+          this.message(response.message, restype)
+          window.location.reload()
+        }).catch(() => {
+          this.buttonloading = false
+        })
       }
       this.buttonloading = false
     },
-    routerTo(name, articleId) {
+    routerTo(name, activityId) {
       this.$router.push({
         name: name,
         params: {
-          newsId: articleId,
-          articleId: articleId
+          activityId: activityId
         }
       })
     }

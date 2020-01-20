@@ -14,6 +14,7 @@
         <el-select v-model="searchInfo.articleStatus" placeholder="文章状态" clearable>
           <el-option :value="1" label="审核过，正常状态" />
           <el-option :value="0" label="未发布" />
+          <el-option :value="2" label="关闭" />
         </el-select>
       </el-form-item>
       <el-form-item label="类型">
@@ -39,8 +40,8 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" class="demo-table-expand">
-            <el-form-item label="主键ID：">
-              <span>{{ props.row.id }}</span>
+            <el-form-item label="文章ID：">
+              <span>{{ props.row.articleId }}</span>
             </el-form-item>
             <el-form-item label="文章标题：">
               <span><a :href="props.row.link" target="_blank" title="点击新标签页打开">{{ props.row.title }}</a></span>
@@ -135,13 +136,12 @@
       <template>
         <el-form label-position="left" class="demo-table-expand">
           <el-form-item label="活动ID：">
-            <span>{{ articleInfo.articleId }}</span>
+            <span>{{ articleInfo.activityId }}</span>
           </el-form-item>
           <el-form-item label="最多参与人数：">
             <span>{{ articleInfo.activityCount }}</span>
           </el-form-item>
           <el-form-item label="报名是否可以超出参与人数：">
-            {{ articleInfo.enrollStatus }}
             <span v-if="articleInfo.enrollStatus == 0">是</span>
             <span v-if="articleInfo.enrollStatus == 1">否</span>
           </el-form-item>
@@ -174,6 +174,10 @@
           </el-form-item>
         </el-form>
       </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="delActivity(articleInfo.activityId)">删除活动</el-button>
+        <el-button type="primary" @click="handleEdit(articleInfo.newsId)">修改活动</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -210,8 +214,8 @@ export default {
     }
   },
   created: function() {
-    if (this.$route.params.id) {
-      this.searchInfo.id = this.$route.params.id
+    if (this.$route.params.activityId) {
+      this.searchInfo.activityId = this.$route.params.activityId
     }
     this.getNewsList()
   },
@@ -237,9 +241,19 @@ export default {
       this.tableData = []
       this.$store.dispatch('getNewsByParam', this.searchInfo).then(response => {
         this.tableData = response.result.data
+        console.log(this.tableData)
         this.loading = false
       }).catch(() => {
         this.loading = false
+      })
+    },
+    delActivity(id) {
+      this.$store.dispatch('deleteActivity', id).then(response => {
+        const restype = response.code !== '000000' ? 'error' : 'success'
+        this.message(response.message, restype)
+        // window.location.reload()
+      }).catch(() => {
+        console.log(id)
       })
     },
     handleSelectionChange(val) {
@@ -255,29 +269,26 @@ export default {
       }
     },
     handleDelete(id) {
-      this.$store
-        .dispatch('delNews', id)
-        .then(response => {
-          const restype = response.code !== '000000' ? 'error' : 'success'
-          this.message(response.message, restype)
-          window.location.reload()
-        })
-        .catch(() => {
-          console.log(id)
-        })
+      this.$store.dispatch('delNews', id).then(response => {
+        const restype = response.code !== '000000' ? 'error' : 'success'
+        this.message(response.message, restype)
+        window.location.reload()
+      }).catch(() => {
+        console.log(id)
+      })
     },
     showActivityMsg(row) {
-      console.log(row)
       this.articleDialogVisible = true
       this.articleInfo = row.activityPo
+      this.articleInfo['activityId'] = row.activityId
+      this.articleInfo['newsId'] = row.id
     },
     updateStatus(row) {
       const from = {
         articleStatus: row.articleStatus,
         id: row.id
       }
-      this.$store.dispatch('updateStatus', from).then(response => {
-        console.log(response)
+      this.$store.dispatch('updateArticleStatus', from).then(response => {
         const restype = response.code !== '000000' ? 'error' : 'success'
         this.message(response.message, restype)
       }).catch(() => {

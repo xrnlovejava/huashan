@@ -18,28 +18,27 @@ export function getAecById(articleId) {
   })
 }
 
-export function addAec(articleId, userId, status) {
+export function addAec(data) {
   return request({
     url: '/aec/add',
     method: 'post',
-    data: {
-      articleId,
-      userId,
-      status
-    }
+    data: data
   })
 }
 
-export function editAec(articleId, userId, status) {
-  console.log(articleId, userId, status)
+export function editAec(data) {
   return request({
     url: '/aec/update',
     method: 'post',
-    data: {
-      articleId,
-      userId,
-      status
-    }
+    data: data
+  })
+}
+
+export function getActivityList(data) {
+  return request({
+    url: '/article/byParam',
+    method: 'post',
+    data: data
   })
 }
 

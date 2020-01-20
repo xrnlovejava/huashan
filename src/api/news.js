@@ -19,7 +19,6 @@ export function getNewsById(id) {
 }
 
 export function addNews(data) {
-  console.log(data)
   return request({
     url: '/article/add',
     method: 'post',
@@ -35,8 +34,7 @@ export function editNews(data) {
   })
 }
 
-export function updateStatus(data) {
-  console.log(data)
+export function updateArticleStatus(data) {
   return request({
     url: '/article/updateStatus',
     method: 'post',
@@ -46,7 +44,17 @@ export function updateStatus(data) {
 
 export function delNews(ids) {
   return request({
-    url: '/article/delete',
+    url: '/article/deleteById',
+    method: 'post',
+    data: {
+      ids
+    }
+  })
+}
+
+export function deleteActivity(ids) {
+  return request({
+    url: '/article/deleteByActivityId',
     method: 'post',
     data: {
       ids
