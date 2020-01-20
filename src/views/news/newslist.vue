@@ -130,6 +130,15 @@
           </el-button-group>
         </div>
       </el-col>
+      <el-col :span="5" :offset="12">
+        <div class="grid-content bg-purple-light">
+          <el-button-group>
+            <el-button :disabled="searchInfo.pageNum === 1?true:false" plain icon="el-icon-arrow-left" @click="page('up')">上一页</el-button>
+            <el-button plain>{{ searchInfo.pageNum }}</el-button>
+            <el-button plain @click="page('down')">下一页<i class="el-icon-arrow-right el-icon--right" /></el-button>
+          </el-button-group>
+        </div>
+      </el-col>
     </el-row>
 
     <el-dialog :visible.sync="articleDialogVisible" title="活动详情" width="50%" center>
@@ -303,6 +312,18 @@ export default {
           activityId: activityId
         }
       })
+    },
+    page(type) {
+      if (type === 'up') {
+        if (this.searchInfo.pageNum > 1) {
+          this.searchInfo.pageNum -= 1
+        } else {
+          this.message('没有上一页啦', 'warning')
+        }
+      } else {
+        this.searchInfo.pageNum += 1
+      }
+      this.getNewsList()
     }
   }
 }
