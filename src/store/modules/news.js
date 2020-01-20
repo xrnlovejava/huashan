@@ -1,5 +1,4 @@
-import { getNewsByParam, addNews, editNews, delNews, getNewsById, uploadImg } from '@/api/news'
-import store from '@/store'
+import { getNewsByParam, addNews, editNews, delNews, getNewsById, uploadImg, updateStatus } from '@/api/news'
 const news = {
   actions: {
     // 获取文章信息 byParam
@@ -20,7 +19,7 @@ const news = {
     // 新增文章
     addNews({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        addNews(Info.title, store.getters.nickname, Info.content, Info.status, Info.type, Info.activityPo).then(response => {
+        addNews(Info).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -30,7 +29,17 @@ const news = {
     // 修改文章信息
     editNews({ commit }, Info) {
       return new Promise((resolve, reject) => {
-        editNews(parseInt(Info.newsId), Info.title, store.getters.nickname, Info.content, Info.status).then(response => {
+        editNews(Info).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 根据主键ID修改文章状态
+    updateStatus({ commit }, Info) {
+      return new Promise((resolve, reject) => {
+        updateStatus(Info).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

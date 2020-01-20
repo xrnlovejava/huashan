@@ -7,6 +7,7 @@ import power from './modules/power'
 import news from './modules/news'
 import activity from './modules/activity'
 import aec from './modules/aec'
+import upload from './modules/upload'
 import permission from './modules/permission'
 import getters from './getters'
 
@@ -21,7 +22,8 @@ const store = new Vuex.Store({
     power,
     news,
     activity,
-    aec
+    aec,
+    upload
   },
   getters
 })

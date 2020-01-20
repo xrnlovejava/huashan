@@ -11,12 +11,10 @@
         <el-option :value="0" label="未发布" />
       </el-select>
       <el-button v-loading="but_loading" type="primary" @click="addNews">提交</el-button>
-      <el-button v-loading="but_loading" @click="clear">清空</el-button>
       <el-button v-if="newsform.type==999" @click="addactivity">设为活动</el-button>
     </el-form>
-    <div class="home">
-      <tinymce ref="editor" v-model="newsform.content" :disabled="disabled"/>
-    </div>
+    <mavon-editor v-loading="loading" ref="md" :ishljs = "true" v-model="newsform.content" element-loading-text="图片上传中..." @imgAdd="$imgAdd" @imgDel="$imgDel"/>
+
     <el-dialog :visible.sync="dialogFormVisible" title="添加活动信息">
       <el-form :model="newsform.activityPo">
         <el-form-item :label-width="formLabelWidth" label="人数">
@@ -58,15 +56,9 @@
   </div>
 </template>
 <script>
-import tinymce from '@/components/TinymceText'
-
 export default {
-  components: {
-    tinymce
-  },
   data() {
     return {
-      disabled: false,
       loading: false,
       but_loading: false,
       dialogFormVisible: false,
@@ -79,8 +71,7 @@ export default {
         status: 0,
         type: 0,
         activityPo: {}
-      },
-      isClear: false
+      }
     }
   },
   methods: {
@@ -91,14 +82,29 @@ export default {
       })
     },
     addNews() {
-      console.log(this.newsform.content)
       this.but_loading = true
+      this.tableData = []
       this.$store.dispatch('addNews', this.newsform).then(response => {
         this.but_loading = false
         this.message('文章提交成功', 'success')
       }).catch(() => {
         this.but_loading = false
         this.message('文章提交失败', 'error')
+      })
+    },
+    $imgDel(pos) {
+      delete this.img_file[pos]
+    },
+    $imgAdd(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      var formdata = new FormData()
+      formdata.append('file', $file)
+      this.$store.dispatch('uploadImg', formdata).then(response => {
+        // 反写返回的图片链接
+        this.$refs.md.$img2Url(pos, response.result)
+        this.message('图片上传成功', 'success')
+      }).catch(() => {
+        this.message('图片上传失败', 'error')
       })
     },
     addactivity() {
@@ -124,10 +130,6 @@ export default {
     },
     cancel() {
       this.dialogFormVisible = false
-    },
-    // 清空内容
-    clear() {
-      this.$refs.editor.clear()
     }
   }
 }
@@ -140,3 +142,4 @@ export default {
         min-height: 600px;
     }
 </style>
+

@@ -1,24 +1,16 @@
 import request from '@/utils/request'
 
 export function getNewsByParam(data) {
-  if (data) {
-    return request({
-      url: '/news/select',
-      method: 'post',
-      data: data
-    })
-  } else {
-    return request({
-      url: '/news/select',
-      method: 'post',
-      data: {}
-    })
-  }
+  return request({
+    url: '/article/byParam',
+    method: 'post',
+    data: data
+  })
 }
 
 export function getNewsById(id) {
   return request({
-    url: '/news/byId',
+    url: '/article/byId',
     method: 'post',
     data: {
       id
@@ -26,38 +18,35 @@ export function getNewsById(id) {
   })
 }
 
-export function addNews(title, author, content, status, type, activityPo) {
+export function addNews(data) {
+  console.log(data)
   return request({
-    url: '/news/add',
+    url: '/article/add',
     method: 'post',
-    data: {
-      title,
-      author,
-      content,
-      status,
-      type,
-      activityPo
-    }
+    data: data
   })
 }
 
-export function editNews(newsId, title, author, content, status) {
+export function editNews(data) {
   return request({
-    url: '/news/update',
+    url: '/article/update',
     method: 'post',
-    data: {
-      newsId,
-      title,
-      author,
-      content,
-      status
-    }
+    data: data
+  })
+}
+
+export function updateStatus(data) {
+  console.log(data)
+  return request({
+    url: '/article/updateStatus',
+    method: 'post',
+    data: data
   })
 }
 
 export function delNews(ids) {
   return request({
-    url: '/news/delete',
+    url: '/article/delete',
     method: 'post',
     data: {
       ids
@@ -67,7 +56,7 @@ export function delNews(ids) {
 
 export function uploadImg(data) {
   return request({
-    url: '/puc/uploadPicFile',
+    url: '/puc/uploadArticleContentPic',
     method: 'post',
     headers: { 'Content-Type': 'multipart/form-data' },
     data: data

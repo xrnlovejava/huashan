@@ -279,7 +279,6 @@ export default {
       }
     },
     imgChange(name, url) {
-      console.log(name, url)
       if (name === 'imageUrl') {
         this.form.articleMappingPo.imageUrl = url
       } else {
