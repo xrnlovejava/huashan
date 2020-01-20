@@ -116,8 +116,8 @@ export default {
     }
   },
   created: function() {
-    if (this.$route.params.articleId) {
-      this.searchInfo.articleId = this.$route.params.articleId
+    if (this.$route.params.activityId) {
+      this.searchInfo.activityId = this.$route.params.activityId
     }
     this.getList()
   },

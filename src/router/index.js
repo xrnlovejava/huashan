@@ -142,22 +142,22 @@ export const asyncRouterMap = [
       }
     ]
   },
-  {
-    path: '/activity',
-    component: Layout,
-    meta: {
-      title: '活动管理',
-      icon: 'form'
-    },
-    children: [
-      {
-        path: 'list',
-        name: '活动管理',
-        component: () => import('@/views/activity/list'),
-        meta: { title: '活动管理', icon: 'form' }
-      }
-    ]
-  },
+  // {
+  //   path: '/activity',
+  //   component: Layout,
+  //   meta: {
+  //     title: '活动管理',
+  //     icon: 'form'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'list',
+  //       name: '活动管理',
+  //       component: () => import('@/views/activity/list'),
+  //       meta: { title: '活动管理', icon: 'form' }
+  //     }
+  //   ]
+  // },
   {
     path: '/aec',
     component: Layout,

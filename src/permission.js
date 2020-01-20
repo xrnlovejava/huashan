@@ -9,6 +9,9 @@ NProgress.configure({ showSpinner: false })// NProgress configuration
 
 const whiteList = ['/login'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title + ' - TESLA CLUB 后台管理系统'
+  }
   NProgress.start()
   if (getToken()) {
     if (to.path === '/login') {

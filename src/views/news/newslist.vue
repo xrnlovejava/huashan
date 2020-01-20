@@ -175,8 +175,9 @@
         </el-form>
       </template>
       <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="routerTo('报名管理', articleInfo.activityId)">查看报名</el-button>
         <el-button @click="delActivity(articleInfo.activityId)">删除活动</el-button>
-        <el-button type="primary" @click="handleEdit(articleInfo.newsId)">修改活动</el-button>
+        <el-button @click="handleEdit(articleInfo.newsId)">修改活动</el-button>
       </span>
     </el-dialog>
   </div>
@@ -293,6 +294,14 @@ export default {
         this.message(response.message, restype)
       }).catch(() => {
         this.buttonloading = false
+      })
+    },
+    routerTo(name, activityId) {
+      this.$router.push({
+        name: name,
+        params: {
+          activityId: activityId
+        }
       })
     }
   }
