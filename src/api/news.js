@@ -70,3 +70,11 @@ export function uploadImg(data) {
     data: data
   })
 }
+
+export function addOrDelActivityId(data) {
+  return request({
+    url: '/article/addOrDelActivityId',
+    method: 'post',
+    data: data
+  })
+}

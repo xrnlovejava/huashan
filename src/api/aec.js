@@ -43,6 +43,7 @@ export function getActivityList(data) {
 }
 
 export function delAec(ids) {
+  console.log(ids)
   return request({
     url: '/aec/delete',
     method: 'post',

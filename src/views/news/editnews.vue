@@ -41,12 +41,17 @@
       </el-form-item>
       <el-button size="mini"><input ref="bannerUrl" type="file" accept="image/*" @change="uploadImg('bannerUrl', $event)" ></el-button>
     </el-form>
-    <el-input v-model="newsform.desc" type="textarea" unlink-panels="false" placeholder="文章描述" maxlength="150" show-word-limit />
+    <el-input v-model="newsform.descript" type="textarea" unlink-panels="false" placeholder="文章描述" maxlength="150" show-word-limit />
     <div class="home">
       <tinymce ref="editor" v-model="newsform.content" :disabled="disabled"/>
     </div>
     <el-dialog :visible.sync="dialogFormVisible" title="添加活动信息">
       <el-form :model="newsform.activityPo">
+        <el-form-item :label-width="formLabelWidth" label="活动">
+          <el-select v-model="selectActivityIndex" placeholder="关联已有活动？" clearable @change="selectActivity">
+            <el-option v-for="(item, index) in newsTableData" :key="index" :label="item.title" :value="index" />
+          </el-select>
+        </el-form-item>
         <el-form-item :label-width="formLabelWidth" label="人数">
           <el-input v-model="newsform.activityPo.activityCount" auto-complete="off" placeholder="最多参与人数"/>
         </el-form-item>
@@ -104,11 +109,13 @@ export default {
       formLabelWidth: '100px',
       buttonloading: false,
       form: [],
+      newsTableData: [],
+      selectActivityIndex: '',
       newsform: {
         id: this.$route.params.id,
         title: '',
         author: this.$store.getters.nickname,
-        desc: '',
+        descript: '',
         content: '',
         articleType: '',
         startTime: '',
@@ -141,6 +148,21 @@ export default {
         this.message('文章数据获取失败', 'error')
       })
     },
+    selectActivity() {
+      this.newsform.activityPo = this.newsTableData[this.selectActivityIndex].activityPo
+    },
+    getActivityList() {
+      const data = {
+        pageSize: 100,
+        pageNum: 1,
+        articleType: 1
+      }
+      this.$store.dispatch('getActivityList', data).then(response => {
+        this.newsTableData = response.result.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
     editNews() {
       if (this.newsform.articleType === 1 && !this.newsform.activityPo.activityCount) {
         this.message('活动文章必须填写活动信息', 'error')
@@ -157,6 +179,7 @@ export default {
     },
     addactivity() {
       this.dialogFormVisible = true
+      this.getActivityList()
     },
     onSubmit() {
       this.buttonloading = true

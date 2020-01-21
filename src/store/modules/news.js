@@ -1,4 +1,4 @@
-import { getNewsByParam, addNews, editNews, delNews, getNewsById, uploadImg, updateArticleStatus, deleteActivity } from '@/api/news'
+import { getNewsByParam, addNews, editNews, delNews, getNewsById, uploadImg, updateArticleStatus, deleteActivity, addOrDelActivityId } from '@/api/news'
 const news = {
   actions: {
     // 获取文章信息 byParam
@@ -80,6 +80,16 @@ const news = {
     uploadImg({ commit }, formdata) {
       return new Promise((resolve, reject) => {
         uploadImg(formdata).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 切换活动ID
+    addOrDelActivityId({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        addOrDelActivityId(data).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

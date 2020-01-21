@@ -41,7 +41,7 @@
         <template slot-scope="props">
           <el-form label-position="left" class="demo-table-expand">
             <el-form-item label="文章ID：">
-              <span>{{ props.row.articleId }}</span>
+              <span>{{ props.row.id }}</span>
             </el-form-item>
             <el-form-item label="文章标题：">
               <span><a :href="props.row.link" target="_blank" title="点击新标签页打开">{{ props.row.title }}</a></span>
@@ -50,7 +50,7 @@
               <span>{{ props.row.author }}</span>
             </el-form-item>
             <el-form-item label="文章描述：">
-              <span>{{ props.row.desc }}</span>
+              <span>{{ props.row.descript }}</span>
             </el-form-item>
             <el-form-item label="文章类型：">
               <span v-if="props.row.articleType == 0">咨询文章</span>
@@ -90,7 +90,7 @@
       <el-table-column label="作者" width="100">
         <template slot-scope="scope">{{ scope.row.author }}</template>
       </el-table-column>
-      <el-table-column label="文章类型" width="90">
+      <el-table-column label="文章类型" width="150">
         <template slot-scope="scope">
           <span v-if="scope.row.articleType == 0">咨询文章</span>
           <span v-if="scope.row.articleType == 2">微信文章</span>
@@ -98,6 +98,7 @@
             <el-tooltip content="点击查看活动详情">
               <el-button size="mini" @click="showActivityMsg(scope.row)">活动</el-button>
             </el-tooltip>
+            <el-button size="mini" @click="addOrDelActivityId(scope.row)">切换</el-button>
           </div>
         </template>
       </el-table-column>
@@ -189,6 +190,20 @@
         <el-button @click="handleEdit(articleInfo.newsId)">修改活动</el-button>
       </span>
     </el-dialog>
+    <el-dialog :visible.sync="addOrDelActivity" title="快速切换活动" width="50%" center>
+      <template>
+        <el-form label-position="left" class="demo-table-expand">
+          <el-form-item label="活动：">
+            <el-select v-model="addOrDelActivityInfo.activityId" placeholder="请选择活动" clearable>
+              <el-option v-for="item in newsTableData" :key="item.activityId" :label="item.title" :value="item.activityId" />
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addOrDelActivitycommit()">切换活动</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -200,6 +215,12 @@ export default {
       tableData: [],
       multipleSelection: [],
       articleDialogVisible: false,
+      addOrDelActivity: false,
+      addOrDelActivityInfo: {
+        activityId: '',
+        id: ''
+      },
+      newsTableData: [],
       articleInfo: {},
       searchInfo: {
         id: '',
@@ -251,17 +272,40 @@ export default {
       this.tableData = []
       this.$store.dispatch('getNewsByParam', this.searchInfo).then(response => {
         this.tableData = response.result.data
-        console.log(this.tableData)
         this.loading = false
       }).catch(() => {
         this.loading = false
+      })
+    },
+    getActivityList() {
+      const data = {
+        pageSize: 100,
+        pageNum: 1,
+        articleType: 1
+      }
+      this.$store.dispatch('getActivityList', data).then(response => {
+        this.newsTableData = response.result.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    addOrDelActivityId(row) {
+      this.addOrDelActivity = true
+      this.getActivityList()
+      this.addOrDelActivityInfo.id = row.id
+    },
+    addOrDelActivitycommit() {
+      this.$store.dispatch('addOrDelActivityId', this.addOrDelActivityInfo).then(response => {
+        window.location.reload()
+      }).catch((e) => {
+        console.log(e)
       })
     },
     delActivity(id) {
       this.$store.dispatch('deleteActivity', id).then(response => {
         const restype = response.code !== '000000' ? 'error' : 'success'
         this.message(response.message, restype)
-        // window.location.reload()
+        window.location.reload()
       }).catch(() => {
         console.log(id)
       })

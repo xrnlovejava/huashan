@@ -167,9 +167,9 @@ export default {
     },
     deleteMany() {
       if (this.multipleSelection) {
-        var ids = '-1'
+        var ids = -1
         this.multipleSelection.forEach(row => {
-          ids = ids + ',' + row.articleId
+          ids = parseInt(ids) + ',' + parseInt(row.id)
         })
         this.handleDelete(ids)
       }
