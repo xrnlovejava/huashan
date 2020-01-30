@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getRoleByParam(data) {
   return request({
-    url: '/role/byParam',
+    url: '/back/role/byParam',
     method: 'post',
     data: data
   })
@@ -10,7 +10,7 @@ export function getRoleByParam(data) {
 
 export function addRole(roleName, descript) {
   return request({
-    url: '/role/add',
+    url: '/back/role/add',
     method: 'post',
     data: {
       roleName,
@@ -21,7 +21,7 @@ export function addRole(roleName, descript) {
 
 export function editRole(roleId, roleName, descript) {
   return request({
-    url: '/role/update',
+    url: '/back/role/update',
     method: 'post',
     data: {
       roleId,
@@ -33,7 +33,7 @@ export function editRole(roleId, roleName, descript) {
 
 export function delRole(ids) {
   return request({
-    url: '/role/delete',
+    url: '/back/role/delete',
     method: 'post',
     data: {
       ids

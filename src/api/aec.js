@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getAecByParam(data) {
   return request({
-    url: '/aec/byParam',
+    url: '/back/aec/byParam',
     method: 'post',
     data: data
   })
@@ -10,7 +10,7 @@ export function getAecByParam(data) {
 
 export function getAecById(articleId) {
   return request({
-    url: '/aec/byId',
+    url: '/back/aec/byId',
     method: 'post',
     data: {
       articleId
@@ -20,7 +20,7 @@ export function getAecById(articleId) {
 
 export function addAec(data) {
   return request({
-    url: '/aec/add',
+    url: '/back/aec/add',
     method: 'post',
     data: data
   })
@@ -28,7 +28,7 @@ export function addAec(data) {
 
 export function editAec(data) {
   return request({
-    url: '/aec/update',
+    url: '/back/aec/update',
     method: 'post',
     data: data
   })
@@ -36,7 +36,7 @@ export function editAec(data) {
 
 export function getActivityList(data) {
   return request({
-    url: '/article/byParam',
+    url: '/back/article/byParam',
     method: 'post',
     data: data
   })
@@ -45,7 +45,7 @@ export function getActivityList(data) {
 export function delAec(ids) {
   console.log(ids)
   return request({
-    url: '/aec/delete',
+    url: '/back/aec/delete',
     method: 'post',
     data: {
       ids

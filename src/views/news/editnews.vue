@@ -111,6 +111,7 @@ export default {
       form: [],
       newsTableData: [],
       selectActivityIndex: '',
+      activityPo: {},
       newsform: {
         id: this.$route.params.id,
         title: '',
@@ -140,9 +141,20 @@ export default {
     },
     getNewsById() {
       this.$store.dispatch('getNewsById', this.newsform.id).then(response => {
-        this.newsform = response.result
-        if (this.newsform.articleType !== 1) {
-          this.newsform.activityPo = {}
+        if (response.result.articleType === 1) {
+          this.newsform = response.result
+        } else {
+          this.newsform.id = response.result.id
+          this.newsform.title = response.result.title
+          this.newsform.author = response.result.author
+          this.newsform.descript = response.result.descript
+          this.newsform.content = response.result.content
+          this.newsform.articleType = response.result.articleType
+          this.newsform.startTime = response.result.startTime
+          this.newsform.endTime = response.result.endTime
+          this.newsform.articleStatus = response.result.articleStatus
+          this.newsform.imageUrl = response.result.imageUrl
+          this.newsform.bannerUrl = response.result.bannerUrl
         }
       }).catch(() => {
         this.message('文章数据获取失败', 'error')
@@ -164,7 +176,7 @@ export default {
       })
     },
     editNews() {
-      if (this.newsform.articleType === 1 && !this.newsform.activityPo.activityCount) {
+      if (this.newsform.articleType === 1 && JSON.stringify(this.newsform.activityPo) === '{}') {
         this.message('活动文章必须填写活动信息', 'error')
         return
       }
@@ -172,14 +184,28 @@ export default {
       this.$store.dispatch('editNews', this.newsform).then(response => {
         this.but_loading = false
         this.message('文章提交成功', 'success')
+        this.$router.push({ path: this.redirect || '/news/newslist' })
       }).catch(() => {
         this.but_loading = false
         this.message('文章提交失败', 'error')
       })
     },
     addactivity() {
-      this.dialogFormVisible = true
+      if (JSON.stringify(this.newsform.activityPo) === '{}') {
+        this.newsform.activityPo = {
+          activityCount: '',
+          enrollStatus: '',
+          userLevel: '',
+          enrollStartDate: '',
+          enrollEndDate: '',
+          startDate: '',
+          endDate: '',
+          gender: '',
+          status: ''
+        }
+      }
       this.getActivityList()
+      this.dialogFormVisible = true
     },
     onSubmit() {
       this.buttonloading = true

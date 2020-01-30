@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getPowerByParam(data) {
   return request({
-    url: '/power/byParam',
+    url: '/back/power/byParam',
     method: 'post',
     data: data
   })
@@ -10,7 +10,7 @@ export function getPowerByParam(data) {
 
 export function addPower(powerName, elevel, parentId, operate, url, descript) {
   return request({
-    url: '/power/add',
+    url: '/back/power/add',
     method: 'post',
     data: {
       powerName,
@@ -25,7 +25,7 @@ export function addPower(powerName, elevel, parentId, operate, url, descript) {
 
 export function editPower(powerId, powerName, elevel, parentId, operate, url, descript) {
   return request({
-    url: '/power/update',
+    url: '/back/power/update',
     method: 'post',
     data: {
       powerId,
@@ -41,7 +41,7 @@ export function editPower(powerId, powerName, elevel, parentId, operate, url, de
 
 export function delPower(ids) {
   return request({
-    url: '/power/delete',
+    url: '/back/power/delete',
     method: 'post',
     data: {
       ids

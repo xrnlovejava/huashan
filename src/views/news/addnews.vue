@@ -138,7 +138,7 @@ export default {
       this.newsform.activityPo = this.newsTableData[this.selectActivityIndex].activityPo
     },
     addNews() {
-      if (this.newsform.articleType === 1 && !this.newsform.activityPo.activityCount) {
+      if (this.newsform.articleType === 1 && JSON.stringify(this.newsform.activityPo) === '{}') {
         this.message('活动文章必须填写活动信息', 'error')
         return
       }
@@ -146,6 +146,7 @@ export default {
       this.$store.dispatch('addNews', this.newsform).then(response => {
         this.but_loading = false
         this.message('文章提交成功', 'success')
+        this.$router.push({ path: this.redirect || '/news/newslist' })
       }).catch(() => {
         this.but_loading = false
         this.message('文章提交失败', 'error')

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function uploadHeaderImage(data) {
   return request({
-    url: '/puc/uploadHeaderImage',
+    url: '/back/puc/uploadHeaderImage',
     method: 'post',
     headers: { 'Content-Type': 'multipart/form-data' },
     data: data
@@ -11,7 +11,7 @@ export function uploadHeaderImage(data) {
 
 export function uploadBannerImage(data) {
   return request({
-    url: '/puc/uploadBannerImage',
+    url: '/back/puc/uploadBannerImage',
     method: 'post',
     headers: { 'Content-Type': 'multipart/form-data' },
     data: data

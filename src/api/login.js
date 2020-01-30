@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(nickName, loginPass) {
   return request({
-    url: '/auth/token',
+    url: '/back/auth/token',
     method: 'post',
     data: {
       nickName,
@@ -13,7 +13,7 @@ export function login(nickName, loginPass) {
 
 export function getInfo(id) {
   return request({
-    url: '/user/byId',
+    url: '/back/user/byId',
     method: 'post',
     data: {
       id
@@ -23,7 +23,7 @@ export function getInfo(id) {
 
 export function logout() {
   return request({
-    url: '/user/logout',
+    url: '/back/user/logout',
     method: 'post'
   })
 }

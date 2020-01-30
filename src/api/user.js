@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function addUser(userNo, nickName, loginPass, fullName, phone, introduction, birthday, gender) {
   return request({
-    url: '/user/add',
+    url: '/back/user/add',
     method: 'post',
     data: {
       userNo,
@@ -19,7 +19,7 @@ export function addUser(userNo, nickName, loginPass, fullName, phone, introducti
 
 export function editUser(id, userNo, nickName, fullName, phone, introduction, birthday, gender, avatar) {
   return request({
-    url: '/user/update',
+    url: '/back/user/update',
     method: 'post',
     data: {
       id,
@@ -38,7 +38,7 @@ export function editUser(id, userNo, nickName, fullName, phone, introduction, bi
 export function getByParam(data) {
   console.log(data)
   return request({
-    url: '/user/byParam',
+    url: '/back/user/byParam',
     method: 'post',
     data: data
   })
@@ -46,7 +46,7 @@ export function getByParam(data) {
 
 export function delUser(ids) {
   return request({
-    url: '/user/delete',
+    url: '/back/user/delete',
     method: 'post',
     data: {
       ids
@@ -56,7 +56,7 @@ export function delUser(ids) {
 
 export function updateStatus(id, status) {
   return request({
-    url: '/user/updateStatus',
+    url: '/back/user/updateStatus',
     method: 'post',
     data: {
       id,
@@ -67,7 +67,7 @@ export function updateStatus(id, status) {
 
 export function updateUserType(id, userType) {
   return request({
-    url: '/user/updateType',
+    url: '/back/user/updateType',
     method: 'post',
     data: {
       id,
@@ -78,7 +78,7 @@ export function updateUserType(id, userType) {
 
 export function updatePwd(id, oldPwd, newPwd) {
   return request({
-    url: '/user/updatePwd',
+    url: '/back/user/updatePwd',
     method: 'post',
     data: {
       id,
